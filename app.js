@@ -2,6 +2,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://root:vVevJky93l9yzQEL@neha.rvvto.mongodb.net/information?retryWrites=true&w=majority', () => {
+    console.log("Database Connection Stablished")
+});
 // mongoose.connect("mongodb+srv://CodePriyanshu786:<password>@mucluster.utw9l.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 var indexRouter = require('./routes/index.route');
 var adminRouter = require('./routes/admin.route');
@@ -9,7 +12,7 @@ var usersRouter = require('./routes/users.route');
 const helmet = require('helmet');
 const hpp = require('hpp');
 var app = express();
-
+const port = process.env.PORT || 8080
 
 
 app.use(express.json());
@@ -26,7 +29,8 @@ app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
 
 
-
-
+app.listen(port,() =>{
+    console.log("Server is running on port: ", port)
+})
 
 module.exports = app;
