@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const occassionSchema = mongoose.Schema({
-    occasionName : {
+    occName : {
         type:String,
         required: true
+    },
+    occImage : {
+        type:String,
+  
     }
 })
 

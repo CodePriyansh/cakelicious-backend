@@ -3,8 +3,12 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category',
-        required: true
+        ref: 'category'
+        
+    },
+    OccassionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'occassion'
     },
     prodName: {
         type: String,
@@ -46,10 +50,8 @@ const productSchema = new mongoose.Schema({
         }],
     discount: {
         type: String
-    },
-    Occassion: {
-        type: mongoose.Schema.ObjectId 
     }
+    
 })
 
 module.exports = mongoose.model('product', productSchema)
