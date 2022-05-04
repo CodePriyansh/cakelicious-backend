@@ -9,7 +9,7 @@ var usersRouter = require('./routes/users.route');
 const helmet = require('helmet');
 const hpp = require('hpp');
 var app = express();
-
+ 
 
 
 app.use(express.json());
@@ -24,7 +24,6 @@ app.use(hpp())
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
-
 
 
 
