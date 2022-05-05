@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category'
+        ref: 'category',
+        required: true
         
     },
     OccassionId: {
@@ -43,7 +44,8 @@ const productSchema = new mongoose.Schema({
     prodReview: [
         {
             userId: {
-                type: String
+                type: String,
+                reference : 'customer'
             }, review: {
                 type: String
             }

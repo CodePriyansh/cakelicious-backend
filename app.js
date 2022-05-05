@@ -2,20 +2,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-mmongoose.connect('mongodb+srv://root:vVevJky93l9yzQEL@neha.rvvto.mongodb.net/information?retryWrites=true&w=majority', () => {
-    console.log("Database Connection Stablished")
+const port = process.env.PORT || 8080
+
+mongoose.connect('mongodb+srv://root:vVevJky93l9yzQEL@neha.rvvto.mongodb.net/information?retryWrites=true&w=majority', () => {
+  
 });
 
-var indexRouter = require('./routes/index.route');
-var adminRouter = require('./routes/admin.route');
-var usersRouter = require('./routes/users.route');
 const helmet = require('helmet');
 const hpp = require('hpp');
 var app = express();
- 
-const port = process.env.PORT || 8080
-
-
+var indexRouter = require('./routes/index.route');
+var adminRouter = require('./routes/admin.route');
+var usersRouter = require('./routes/users.route');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

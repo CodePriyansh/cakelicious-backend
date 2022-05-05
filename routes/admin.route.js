@@ -12,7 +12,7 @@ const tokenVerification = require("../Authorization/adminAuth.token")
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: 'public/images',
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);
     }
 });
@@ -33,27 +33,32 @@ router.post("/signup",
 );
 
 
-router.post("/addCategory",tokenVerification.varifyToken, upload.single('catImage'), categoryController.addCategory);
-router.get("/viewCategory",tokenVerification.varifyToken, categoryController.getCategory);
-router.post("/deleteCategory",tokenVerification.varifyToken, categoryController.deleteCategory);
-router.post("/updateCategory",tokenVerification.varifyToken, upload.single('catImage'), categoryController.updateCategory);
+router.post("/addCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.addCategory);
 
-router.post("/addOccassion",tokenVerification.varifyToken, upload.single('occImage'), occassionController.addOccassion);
-router.get("/viewOccassion",tokenVerification.varifyToken, occassionController.getOccassion);
+router.get("/viewCategory", tokenVerification.varifyToken, categoryController.getCategory);
+
+router.post("/deleteCategory", tokenVerification.varifyToken, categoryController.deleteCategory);
+
+router.post("/updateCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.updateCategory);
+
+router.post("/addOccassion", tokenVerification.varifyToken, upload.single('occImage'), occassionController.addOccassion);
+
+router.get("/viewOccassion", tokenVerification.varifyToken, occassionController.getOccassion);
 
 
-router.post("/addProduct",tokenVerification.varifyToken, upload.array('prodImages'), productController.addProduct);
-router.get("/viewProduct",tokenVerification.varifyToken, productController.getProduct);
- router.post("/deleteProduct",tokenVerification.varifyToken, productController.deleteProduct);
+router.post("/addProduct", tokenVerification.varifyToken, upload.array('prodImages'), productController.addProduct);
+
+router.get("/viewProduct", tokenVerification.varifyToken, productController.getProduct);
+
+router.post("/deleteProduct", tokenVerification.varifyToken, productController.deleteProduct);
+
 //  router.post("/updateProduct",tokenVerification.varifyToken, upload.array('prodsImages'), productController.updateProduct);
- router.post("/getProductBycategory/:categoryId",tokenVerification.varifyToken,productController.getProductByCategory);
+router.post("/getProductBycategory/:categoryId", tokenVerification.varifyToken, productController.getProductByCategory);
 
+router.get("/searchProduct/:text", tokenVerification.varifyToken, productController.searchProduct)
 
- router.get("/searchProduct/:text",tokenVerification.varifyToken, productController.searchProduct)
- 
+router.get("/viewCustomer", tokenVerification.varifyToken, CustomerController.getCustomer);
 
-
-router.get("/viewCustomer", tokenVerification.varifyToken, CustomerController.getCustomer );
-router.get("/viewOrder", tokenVerification.varifyToken, CustomerController.orderDetail )
+router.get("/viewOrder", tokenVerification.varifyToken, CustomerController.orderDetail)
 
 module.exports = router;
