@@ -1,37 +1,37 @@
 const { response } = require("express");
 const Category = require("../../models/admin-models/category.model");
 const Product = require("../../models/admin-models/product.model")
-const {Storage} = require("@google-cloud/storage");
+const { Storage } = require("@google-cloud/storage");
 const path = require("path");
 const request = require('request')
 const Gstorage = new Storage({
-    keyFilename : "storeimges-firebase-adminsdk-9t7gc-1e1f2e9b45.json"
+    keyFilename: "cake-licious-firebase-adminsdk-tce6e-3c049fc93d.json"
 })
-let bucketName = "gs://storeimges.appspot.com"
+let bucketName = "gs://cake-licious.appspot.com"
 
 const uploadFile = async (filename) => {
 
     await Gstorage.bucket(bucketName).upload(filename, {
- 
-      gzip: true,
-     
-      metadata: {
+
+        gzip: true,
+
         metadata: {
-          firebaseStorageDownloadTokens: "hello"
-        }
-      },
+            metadata: {
+                firebaseStorageDownloadTokens: "hello"
+            }
+        },
     });
     console.log(`${filename} uploaded to ${bucketName}.`);
-  }
+}
 
-  exports.addCategory = (request, response, next) => {
-  
-  uploadFile(path.join("public/images/") + request.file.filename) 
+exports.addCategory = (request, response, next) => {
+
+    uploadFile(path.join("public/images/") + request.file.filename)
 
     Category.create({
-            catName: request.body.catName,
-            catImage: "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/"+ request.file.filename+"?alt=media&token=hello"
-        })
+        catName: request.body.catName,
+        catImage: "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" + request.file.filename + "?alt=media&token=hello"
+    })
         .then(result => {
             return response.status(201).json(result);
         })
@@ -43,23 +43,28 @@ const uploadFile = async (filename) => {
 exports.deleteCategory = (request, response) => {
 
 
-        Product.deleteOne({categoryId : request.body.id })
+    Category.deleteMany({ _id: request.body.id })
         .then(result => {
-            console.log(result)
-            if (result.deletedCount)
-                return response.status(202).json({ message: 'success' });
-            else
-                return response.status(204).json({ message: 'not deleted' });
+            Product.deleteMany({ categoryId: request.body.id }).then((result) => {
+                console.log(result)
+                if (result.deletedCount)
+                    return response.status(200).json({ message: 'success' });
+                else
+                    return response.status(200).json({ message: 'product not deleted' });
+            }).catch((err) => {
+                return response.status(500).json({ message: 'Something went wrong products not deleted' });
+            })
+
         })
         .catch(err => {
             console.log(err)
-            return response.status(500).json({ message: 'Something went wrong' });
+            return response.status(500).json({ message: 'Something went wrong products not deleted' });
         });
 }
 exports.getCategory = (request, response) => {
     Category.find().
-    then(results => {
-        console.log(results)
+        then(results => {
+            console.log(results)
             return response.status(200).json(results);
         })
         .catch(err => {
@@ -69,32 +74,34 @@ exports.getCategory = (request, response) => {
 exports.updateCategory = (req, response, next) => {
     console.log(req.body)
     console.log(req.file)
-   let newImage;
-        if(req.file){
-           
-             newImage = "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/"+req.file.filename+"?alt=media&token=hello";
-  uploadFile(path.join("public/images/") + req.file.filename) 
-        
-    request({
-        url: req.body.oldImage,
-        qs:{
-        key:"MIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDJStx61fe3YVc/\nj+3mM1RZYc9BIlh7yPJpoGN+FYy7p5SK6hqRQLuSIWxM5bF7LmfiKXsbePyVxTnt\nOSMQ38nY0ioLg5T03Q78ecE4LDmFP7Yj6o8KLWkuSSvJBz22v7ByjIaO2EjCKpqP\nlHFkDfEiFi2DmRBpbC5wThZC+KO6L8P5hliccJ7c7YV9seY1GCaDES8s86ZDYeeU\neamgs+ilMERALxcg0Bw3iL3H4OXvc6LBZFsAf4gGOK8iLEiANtCGfS0M5iDxBDnV\n7FvutEHqjzeDj61qUBCPNBLQ5ZOrz+5x9NIWC43XcnOVQargbAqvFGowL/GjyAYn\nVLsEG61FAgMBAAECgf9kDhIJ/NFlFb2ImsJl6p3C0Bt1BN12qivU1SSfR5bssB/l\n7PfHu6WAvZxXnNTbpfV9NaE7xqfGyoJAqGYFvTdXzx+XGZCxJjCMzvh8M39j/IdM\n0wrGxEvD9hsNkcvbSu0qAy/fUSLZYNPzCpZSZZu2lc+J2kuOG3f52ta182Fu6e1o\nMff1PA2MAR3DK3ljfl2ilI8kPG/GOxgoNGc/XPo01xo/UdBN9RxWUsC5zMUdoqtr\npgYXV9G7IiQ0j3RqiYcxbhmncDJ0gUyNxzdKMgSSQpxK6NoInzx/AcCxIWELwuYj\nYSlaAnNgcuJfjh6SOmJaZ3wxVjZDQi8a0loVg2ECgYEA6/H7mPK6Tml+pUVwWaNc\n2T5ZqrYvVFejWgSFdl8kk5flyFD9iJoyPmx1jTu0mXdxUfnpZrh6HSMk0maae6w7\nebsRpGLrFZZSSLi524B0pVF1s4nb0GHTq2kczHgzIoSojabpJgKJ1zFu1/Mnr4RR\nnQsW6Mp7lc2NqVCKLImdY+UCgYEA2mba969Wu4PqRcgGuznH3du1niu8nlkMxh4w\nbrMxVOlyGS43+OajEQEF7pAXLvbxJOkKZ/rV0VbZxu11UCT477roLXYZhUguqhR9\n52XgcE4aqJWTYm2hkq3mfcYSXK4qAO6yjO5yhRXe3uIY/Z7Mj614DAP8+Y/f8Ho8\n0A0fTeECgYBjM/wII85Hl72C+b4yQiiQwtFqoG0n9i0ddRc0XO6BC/W2Eq921vZX\nHr0SI89cU0cXI4+J+/iD9bnOqQs9An6DQS86wch77BcuslSawNjKhYSKd2UvqWIZ\nCPnt0oAVfFduL4aJz7lq/ELRk0/VUToLYJVCTZhGtQVh8hYWgcnmLQKBgFQg/MYe\nP5254duBgr5KMqhOgvZryJuCl/4VEPkDg8Q+rJnwiNUTGstpBnzv+k44B4n9Tung\n4M5j0z3iqKb3pwDJkbg5XvlNZdRUUm95eewo2fIItB5dNrkGzduzGc2jtUBoslTB\nYVHMq+5VT+Uab5gE7VJLkv4bIttCavyFoYJhAoGBALkEhOeHf7UBQ3BUBxU692H5\nPDMN7/EqKlNq/I9uLJsRqDLTI0QxH0XVVowNeXI3JPszx0Q31yh3VAp8FQr8U+TS\n/kmX0ferlKdvhyyQDiRKFBWp1djqUi5RpzI3HgjNU8yTrIZnvEIQqrsI9xKWlkhO\n9bq/BhFoQbqpbSMHlJHK"},
-        method: 'DELETE'
-    })
-}else{
-    newImage =req.body.oldImage;
-}
+    let newImage;
+    if (req.file) {
+
+        newImage = "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" + req.file.filename + "?alt=media&token=hello";
+        uploadFile(path.join("public/images/") + req.file.filename)
+
+        request({
+            uri: req.body.oldImage,
+            qs: {
+                key: "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAqCWw4wqPoaCs\nFydsHyo3QdDAUeUq1yGhAX/1jZPGtAhFCjXWZ9K2i2wpZ6Gp6ccQvw2N21I6rvvy\nsvrzptE+KaFYRSj98UxxB6JsHibWKPDLevFbu8+sjbUYrQtfy+sWxE6Pe/4/SjVz\ng6DdMnUhBSIToMEmFLbyfSi3rNvyFaL8sUFhFhQiw25zMZHgnd0AkPTvqhdThMxr\n84PYFMobmj9S9nCaMTneSYfAAE7zDxCIvQMwUtogEc98W1nof7HyQ3t7NcAftxgT\nEYFxW+xwkpaHWcdiX6UaAg0L5pJo/+dQApB86eZgwUnP6af1HO3sdo3XMFcRlCe6\nGMXYcrZ7AgMBAAECggEAX0cJFNjD0VKynkj5IxyqiRdQgLw/pJcuN20BdlPlIGDK\nsjIhe/5uk/6RqExrBBfsbdi+gEhV+1WsnlNrjnISizaVZ40Uf7oE/uUyq1uiA0nO\nBCOyF5bjVsfiJuj1dhPoGKNO4uEEVRKDKrSPKrWYfZMHTkOzIf0emP/S0jt3rtmt\nr6yoXz0WllZpPCDMlwyHo7X7/547N6/BUfJfPB16pGaDixJrfmQu89D6Bjju6IE9\nkFxNWobEIfRHqW3le7bdlXMWDwTcRpRlbo9O9MzTsghu++P5o5X6VI0ahLwqTtIt\nSXPqqQWvvvn4e1XjffJVZpfm4X1bBz1Pe2MYA8rJGQKBgQD1sTDZNFH8pdMV+FVE\ntdG5a5vXv6Q5sgDaRG7IMfUfdxf1lmB6uJbse6RaWx7HlAGfurF0BAv29TKJemrz\nWz4WNtapShnbAzT2lrWiwtT3wCaNWgJ53u+9ruS1o8wYtmTh8vfi/VBG7Q99ERVs\n3t6UnAgCieXIdy1wnMyRm2VtJwKBgQDIvVc5OAKH+9hMQ7ZsFVQFL7N0pLzuitjG\nvQZUviM3BkitKrs8t4ul00+M5NZ+VPcCGhXonBBt9op+UZNlVKD5HT5Nbp+f7KlW\n0TD+D9TGvo81PZazRiGvbeY9lmpGLO88BjwpSPiQt0TV687wrQlEkrrZK7BdhE5p\n5Ia2nuyojQKBgQCu1noJh1b0sFiHYOHk9HIbPf13ybOnLwm2SU6AfjSOQKS3Klzb\n1/HmtZHejstXgPaq4SMYiSyugAyHkqr7JKoJCts1OzstBJozBEqbWYRODdoharUq\nXsBCPmwY6kf6KgmeVNWcHWF8J4SHHpodkHfaTzLQA6uWPWEDq0FUOL4zrwKBgG5u\n64tI6uuQe0AJiFQRr7VitqEW9/FrZTKATvlT2N+uj1Dkzzjp6OODSqJCSlYZvAHm\nA+OB5+/2z94KVsJKOnyRv/KtRxeeBNMEJqW+Y9oqf3JUvZFGpcVy+lUraK/OjJZC\n/9nekRBcInxlS+VP7GdTKYPL6yynWtQaqpnQ+HUJAoGBALyZMEWlCVpBB0Ue1I0c\nIowCGvBL0M0dSXV/FfwYJ1dmHuIB7Ux3GvF+LlVIUmynZqwCswIrATQoZpAZT5W/\n/Tv34iOegGjzhYZCzjKPuoK9BkEm32bl9qP125mAqsVTr7eoreSnz0qYyNMIImyC\nfJWHJiHKagLBuMNsBSww97ut"
+            },
+            method: 'DELETE'
+        })
+    } else {
+        newImage = req.body.oldImage;
+    }
     Category.updateOne({
-        _id: req.body.categoryid},{
+        _id: req.body.categoryid
+    }, {
         $set: {
             catName: req.body.catName,
             catImage: newImage
         }
     }).then(result => {
-        if (result.modifiedCount){
+        if (result.modifiedCount) {
             console.log("csjbvjdsbjksbjkdvbj")
             return response.status(200).json(result);
-    }
+        }
         else
             return response.status(404).json({ message: 'record not found' })
     }).catch(err => {

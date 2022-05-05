@@ -3,9 +3,9 @@ const Product = require("../../models/admin-models/product.model");
 const {Storage} = require("@google-cloud/storage");
 const request = require('request')
 const Gstorage = new Storage({
-    keyFilename : "storeimges-firebase-adminsdk-9t7gc-1e1f2e9b45.json"
+    keyFilename : "cake-licious-firebase-adminsdk-tce6e-3c049fc93d.json"
 })
-let bucketName = "gs://storeimges.appspot.com"
+let bucketName = "gs://cake-licious.appspot.com"
 
 const uploadFile = async (filename) => {
 
@@ -23,15 +23,16 @@ const uploadFile = async (filename) => {
   }
 exports.addProduct = (request, response, next) => {
 
-    // uploadFile(path.join("public/images/") + request.files.filename); 
+  for(let i=0;i<4;i++){
+    console.log(request.files[i].filename)
+    uploadFile(path.join("public/images/") + request.files[i].filename); 
+  }
      prodImage1="";
      prodImage2="";
      prodImage3="";
      prodImage4="";
     console.log(request.body);
-    console.log(request.body.prodImages[0].name);
     console.log(request.files);
-    console.log(request.file);
     Product.create({
         categoryId: request.body.categoryId,
         OccassionId: request.body.occassionId,
@@ -68,7 +69,7 @@ exports.deleteProduct = (request, response) => {
         .then(result => {
             console.log(result)
             if (result.deletedCount)
-                return response.status(202).json({ message: 'success' });
+                return response.status(200).json({ message: 'success' });
             else
                 return response.status(204).json({ message: 'not deleted' });
         })
