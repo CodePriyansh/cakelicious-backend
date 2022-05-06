@@ -51,8 +51,10 @@ const orderSchema = new mongoose.Schema({
         default: "placed"
     },
     total: {
-        type: String
+        type: Number
     }
+},{
+    timestamps:true
 })
 
 module.exports = mongoose.model("orders", orderSchema)

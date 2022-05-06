@@ -3,11 +3,14 @@ var path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors')
 mongoose.connect("mongodb+srv://CodePriyanshu786:pathak123@mucluster.utw9l.mongodb.net/test-cakelicious?retryWrites=true&w=majority");
+const bodyparser = require('body-parser')
 const port = process.env.PORT || 3000
-// const helmet = require('helmet');
-// const hpp = require('hpp');
+
 var app = express();
 app.use(cors());
+app.use(bodyparser.json())
+
+
 // admin's routerse import 
 var adminRouter = require('./routes/admin/admin.route');
 var categoryRouter = require('./routes/admin/category.route');
@@ -27,6 +30,7 @@ var wishlistRouter = require('./routes/customer/wishlist.route');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
