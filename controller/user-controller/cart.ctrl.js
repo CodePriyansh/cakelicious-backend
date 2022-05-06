@@ -5,7 +5,7 @@
 const Cart = require('../../models/customer-model/cart.model')
 exports.AddToCart = async (request, response) => {
 
-    console.log(request.body);
+    console.log(request.body)
 
     var cart = await Cart.findOne({ customerId: request.body.cusId })
 
