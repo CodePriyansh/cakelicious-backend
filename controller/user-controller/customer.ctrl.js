@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
 
-const domain = "http://localhost:8080";
+const domain = "http://localhost:3000";
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -48,7 +48,7 @@ exports.Signup = async (request, response) => {
           expiresIn: "24H",
         }
       );
-      let link = domain + "/user/verify-email/" + verifyToken;
+      let link = domain + "/customer/verify-email/" + verifyToken;
       let mailDetails = {
         from: '"CakeLicious 🎂" <process.env.EMAIL>', // sender address
         to: result.email, // list of receivers
@@ -142,9 +142,10 @@ exports.resendVerifyEmail = async (request, response) => {
 exports.Signin = async (request, response) => {
   const { email, password } = request.body;
   const result = await Customer.findOne({ email: email });
-  console.log("Result of login: ", result);
+  console.log("Result of login: ", result); 
   if (result) {
-    // if (result.status) {
+    console.log(result.status)
+    if (result.status) {
       const match = await bcrypt.compare(password, result.password);
       console.log("Bcrypt: ", match)
       if (match) {
@@ -169,8 +170,12 @@ exports.Signin = async (request, response) => {
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
       }
-    // }
-  } else {
+    }
+    else {
+      return response.status(401).json({ msg: "Not varified" });
+    }
+  } 
+  else {
     return response.status(500).json({ error: "Email is invalid!" });
   }
 };
@@ -213,7 +218,7 @@ exports.resetPassword = async (request, response) => {
   const result = await Customer.findOne({ email: email });
   console.log(result);
   if (result) {
-    let link = domain + "/user/verify-otp/" + result._id;
+    let link = domain + "/customer/verify-otp/" + result._id;
     let otp = otpGenerator.generate(6, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
