@@ -23,14 +23,11 @@ const uploadFile = async (filename) => {
   }
 exports.addProduct = (request, response, next) => {
 
-  for(let i=0;i<4;i++){
-    console.log(request.files[i].filename)
-    uploadFile(path.join("public/images/") + request.files[i].filename); 
-  }
-     prodImage1="";
-     prodImage2="";
-     prodImage3="";
-     prodImage4="";
+  // for(let i=0;i<4;i++){
+  //   console.log(request.files[i].filename)
+  //   uploadFile(path.join("public/images/") + request.files[i].filename); 
+  // }
+     
     console.log(request.body);
     console.log(request.files);
     Product.create({

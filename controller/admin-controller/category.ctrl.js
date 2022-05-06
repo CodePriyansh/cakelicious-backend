@@ -26,7 +26,7 @@ const uploadFile = async (filename) => {
 
 exports.addCategory = (request, response, next) => {
 
-    uploadFile(path.join("public/images/") + request.file.filename)
+    // uploadFile(path.join("public/images/") + request.file.filename)
 
     Category.create({
         catName: request.body.catName,

@@ -4,9 +4,9 @@ const {Storage} = require("@google-cloud/storage");
 const path = require("path");
 const request = require('request')
 const Gstorage = new Storage({
-    keyFilename : "storeimges-firebase-adminsdk-9t7gc-1e1f2e9b45.json"
+    keyFilename : "cake-licious-firebase-adminsdk-tce6e-3c049fc93d.json"
 })
-let bucketName = "gs://storeimges.appspot.com"
+let bucketName = "gs://cake-licious.appspot.com"
 
 const uploadFile = async (filename) => {
 

@@ -5,13 +5,13 @@ const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
 
-const domain = "http://localhost:3000";
+const domain = "http://localhost:8080";
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD,
+    pass: process.env.EMAIL_PASSWORD
   },
 });
 
@@ -21,7 +21,7 @@ exports.Signup = async (request, response) => {
   const { name, email, mobile, password } = request.body;
   const hash = await bcrypt.hash(password, 12);
   let oldCustomer = await Customer.findOne({ email: email, mobile: mobile });
-  console.log("Old Customer: ", oldCustomer);
+  console.log("Old Customer: ", oldCustomer); 
   if (!oldCustomer) {
     const result = await Customer.create({
       name: name,
@@ -34,6 +34,8 @@ exports.Signup = async (request, response) => {
       otp:"",
     });
     if (result) {
+      console.log(result)
+      console.log(process.env.EMAIL_TOKEN_KEY)
       let verifyToken = jwt.sign(
         {
           emailVerification: {
@@ -46,7 +48,7 @@ exports.Signup = async (request, response) => {
           expiresIn: "24H",
         }
       );
-      let link = domain + "/customer/verify-email/" + verifyToken;
+      let link = domain + "/user/verify-email/" + verifyToken;
       let mailDetails = {
         from: '"CakeLicious 🎂" <process.env.EMAIL>', // sender address
         to: result.email, // list of receivers
@@ -142,9 +144,9 @@ exports.Signin = async (request, response) => {
   const result = await Customer.findOne({ email: email });
   console.log("Result of login: ", result);
   if (result) {
-    if (result.status) {
+    // if (result.status) {
       const match = await bcrypt.compare(password, result.password);
-      // console.log("Bcrypt: ", match)
+      console.log("Bcrypt: ", match)
       if (match) {
         const token = jwt.sign(
           {
@@ -167,7 +169,7 @@ exports.Signin = async (request, response) => {
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
       }
-    }
+    // }
   } else {
     return response.status(500).json({ error: "Email is invalid!" });
   }
@@ -211,7 +213,7 @@ exports.resetPassword = async (request, response) => {
   const result = await Customer.findOne({ email: email });
   console.log(result);
   if (result) {
-    let link = domain + "/customer/verify-otp/" + result._id;
+    let link = domain + "/user/verify-otp/" + result._id;
     let otp = otpGenerator.generate(6, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
