@@ -6,10 +6,10 @@ const router = express.Router();
 const orderController = require('../../controller/user-controller/order.ctrl')
 const auth = require('../../Authorization/userAuth.token')
 
-// router.post('/order', auth.verifytoken, orderController.createOrder)
+router.post('/create-order', auth.verifyToken, orderController.createOrderId)
 
-// router.post('/place-order', auth.verifytoken, orderController.PlaceOrder)
+router.post('/place-order', auth.verifyToken, orderController.placeOrder)
 
-// router.post('/buy-now', auth.verifytoken, orderController.PlaceOrderSingle)
+router.post('/buy-now', auth.verifyToken, orderController.buyNow)
 
 module.exports = router;

@@ -1,7 +1,4 @@
 
-
-
-
 const Cart = require('../../models/customer-model/cart.model')
 exports.AddToCart = async (request, response) => {
 
@@ -10,7 +7,7 @@ exports.AddToCart = async (request, response) => {
     var cart = await Cart.findOne({ customerId: request.body.cusId })
 
     if (!cart) {
-         cart = new Cart({
+        cart = new Cart({
             customerId: request.body.cusId
         })
     }
@@ -27,36 +24,36 @@ exports.AddToCart = async (request, response) => {
 }
 
 
-exports.DeleteCartItem=(request,response)=>{
+exports.DeleteCartItem = (request, response) => {
 
-    Cart.updateOne({customerId:request.body.cusId},{
+    Cart.updateOne({ customerId: request.body.cusId }, {
 
-        $pullAll :{
-            cartItems:[request.body.pId]
+        $pullAll: {
+            cartItems: [request.body.pId]
         }
-    }).then((result)=>{
-      return response.status(200).json(result)
-    }).catch((err)=>{
-     return response.status(500).json(err)
+    }).then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
+        return response.status(500).json(err)
     })
 }
 
-exports.ViewCart = (request,response)=>{
+exports.ViewCart = (request, response) => {
 
-      Cart.find({customerId:request.body.cusId}).populate("cartItems").then((result)=>{
-      return response.status(200).json(result)
-      }).catch((err)=>{
+    Cart.find({ customerId: request.body.cusId }).populate("cartItems").then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
         return response.status(500).json(err)
 
-      })
+    })
 }
 
 
-exports.DeleteCart = (request,response)=>{
+exports.DeleteCart = (request, response) => {
 
-    Cart.deleteOne({customerId:request.body.cusId}).then((result)=>{
-return response.status(200).json(result)
-    }).catch((err)=>{
+    Cart.deleteOne({ customerId: request.body.cusId }).then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
         return response.status(500).json(err);
 
     })

@@ -7,7 +7,7 @@ exports.AddToWishlist = async (request, response) => {
     var wishlist = await Wishlist.findOne({ customerId: request.body.cusId })
 
     if (!wishlist) {
-         wishlist = new Wishlist({
+        wishlist = new Wishlist({
             customerId: request.body.cusId
         })
     }
@@ -23,36 +23,36 @@ exports.AddToWishlist = async (request, response) => {
 
 }
 
-exports.DeleteWishlistItem=(request,response)=>{
+exports.DeleteWishlistItem = (request, response) => {
 
-    Wishlist.updateOne({customerId:request.body.cusId},{
+    Wishlist.updateOne({ customerId: request.body.cusId }, {
 
-        $pullAll :{
-            wishlistItem:[request.body.pId]
+        $pullAll: {
+            wishlistItem: [request.body.pId]
         }
-    }).then((result)=>{
-      return response.status(200).json(result)
-    }).catch((err)=>{
-     return response.status(500).json(err)
+    }).then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
+        return response.status(500).json(err)
     })
 }
 
-exports.ViewWishlist = (request,response)=>{
+exports.ViewWishlist = (request, response) => {
 
-      Wishlist.find({customerId:request.body.cusId}).populate("wishlistItem").then((result)=>{
-      return response.status(200).json(result)
-      }).catch((err)=>{
+    Wishlist.find({ customerId: request.body.cusId }).populate("wishlistItem").then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
         return response.status(500).json(err)
 
-      })
+    })
 }
 
 
-exports.DeleteWishlist = (request,response)=>{
+exports.DeleteWishlist = (request, response) => {
 
-    Wishlist.deleteOne({customerId:request.body.cusId}).then((result)=>{
-return response.status(200).json(result)
-    }).catch((err)=>{
+    Wishlist.deleteOne({ customerId: request.body.cusId }).then((result) => {
+        return response.status(200).json(result)
+    }).catch((err) => {
         return response.status(500).json(err);
 
     })
