@@ -21,5 +21,15 @@ router.post("/deleteProduct", tokenVerification.varifyToken, productController.d
 //  router.post("/updateProduct",tokenVerification.varifyToken, upload.array('prodsImages'), productController.updateProduct);
 router.post("/getProductBycategory/:categoryId", tokenVerification.varifyToken, productController.getProductByCategory);
 
+router.post("/getProductBycategory/:pId", tokenVerification.varifyToken, productController.getProductById);
+
 router.get("/searchProduct/:text", tokenVerification.varifyToken, productController.searchProduct)
+
+router.post("/addReview" , tokenVerification.varifyToken, productController.addReview)
+router.post("/deleteOneReview" , tokenVerification.varifyToken, productController.deleteOneReview)
+router.get("/viewReview" , tokenVerification.varifyToken, productController.viewReview)
+
+
+
+
 module.exports = router;

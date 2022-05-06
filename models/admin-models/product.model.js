@@ -5,7 +5,6 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'category',
         required: true
-        
     },
     OccassionId: {
         type: mongoose.Schema.Types.ObjectId,
