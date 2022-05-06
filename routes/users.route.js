@@ -39,7 +39,6 @@ router.post('/verify-otp/:id', customerController.verifyOTP)
 
 router.post('/profile', auth, upload.single("profilePic"), customerController.Profile)
 
-// router.post('/profile-update', auth.verifytoken, upload.single("profilePic"), customerController.Profile)
 
 // router.post('/add-to-cart', auth.verifytoken, cartController.AddToCart)
 
