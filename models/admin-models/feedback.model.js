@@ -8,5 +8,4 @@ const feedbackSchema = new mongoose.Schema({
             type: String
         }
 })
-
-module.exports = mongoose.model('feedBack', feedbackSchema)
+module.exports = mongoose.model('feedBack', feedbackSchema);

@@ -144,9 +144,9 @@ exports.Signin = async (request, response) => {
   const result = await Customer.findOne({ email: email });
   console.log("Result of login: ", result);
   if (result) {
-    if (result.status) {
+    // if (result.status) {
       const match = await bcrypt.compare(password, result.password);
-      // console.log("Bcrypt: ", match)
+      console.log("Bcrypt: ", match)
       if (match) {
         const token = jwt.sign(
           {
@@ -169,7 +169,7 @@ exports.Signin = async (request, response) => {
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
       }
-    }
+    // }
   } else {
     return response.status(500).json({ error: "Email is invalid!" });
   }
