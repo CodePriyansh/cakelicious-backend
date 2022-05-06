@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const productController = require('../../controller/user-controller/product.ctrl');
+
 const auth = require('../../Authorization/userAuth.token')
 
-// router.post('/search-product', customerController.searchProduct);
+router.post("/getProductBycategory/:categoryId", auth.verifyToken, productController.getProductByCategory);
 
-// router.get('/getProduct', customerController.getProduct)
+router.post("/getProductBycategory/:pId", auth.verifyToken, productController.getProductById);
 
-// router.post('/getProductById', customerController.getProductById)
+router.get("/searchProduct/:text", auth.verifyToken, productController.searchProduct)
 
-// router.post('/ViewProductByCategory', customerController.getProductByCategory)
+router.post("/addReview" , auth.verifyToken, productController.addReview)
 
 module.exports = router;
