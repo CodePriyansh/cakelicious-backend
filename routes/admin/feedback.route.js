@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const tokenVerification = require("../../Authorization/adminAuth.token")
+const auth = require("../../Authorization/userAuth.token")
 
 const feedbackController = require('../../controller/admin-controller/feedback.ctrl')
-router.post("/addFeedback", tokenVerification.varifyToken, feedbackController.addFeedback)
-router.get("/viewFeedback", tokenVerification.varifyToken, feedbackController.viewFeedback)
+router.post("/addFeedback", auth.verifyToken, feedbackController.addFeedback)
+router.get("/viewFeedback", auth.verifyToken, feedbackController.viewFeedback)
 
 module.exports = router;

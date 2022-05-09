@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const occassionController = require('../../controller/admin-controller/occassion.ctrl')
-const tokenVerification = require("../../Authorization/adminAuth.token")
+const auth = require("../../Authorization/userAuth.token")
 
 const multer = require('multer');
 var storage = multer.diskStorage({
@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post("/addOccassion", tokenVerification.varifyToken, upload.single('occImage'), occassionController.addOccassion);
+router.post("/addOccassion", auth.verifyToken, upload.single('occImage'), occassionController.addOccassion);
 
-router.get("/viewOccassion", tokenVerification.varifyToken, occassionController.getOccassion);
+router.get("/viewOccassion", auth.verifyToken, occassionController.getOccassion);
 module.exports = router;

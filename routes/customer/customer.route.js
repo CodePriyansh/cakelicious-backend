@@ -15,6 +15,7 @@ let storage = multer.diskStorage({
 let upload = multer({storage: storage})
 
 
+
 router.post('/sign-up', customerController.Signup)
 
 router.post('/sign-in', customerController.Signin)

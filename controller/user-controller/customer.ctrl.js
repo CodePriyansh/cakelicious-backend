@@ -4,6 +4,8 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
+const fast2sms = require("fast-two-sms");
+
 
 const domain = "http://localhost:3000";
 
@@ -16,6 +18,7 @@ let mailTransporter = nodemailer.createTransport({
 });
 
 const Customer = require("../../models/customer-model/user.model");
+
 
 exports.Signup = async (request, response) => {
   const { name, email, mobile, password } = request.body;
@@ -180,7 +183,6 @@ exports.Signin = async (request, response) => {
   }
 };
 
-//not working 
 exports.verifyEmail = async (request, response) => {
   console.log("helllo")
   let paramsToken = request.params.id;

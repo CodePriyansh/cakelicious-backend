@@ -11,13 +11,13 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 const categoryController = require('../../controller/admin-controller/category.ctrl');
 
-const tokenVerification = require("../../Authorization/adminAuth.token")
+const auth = require("../../Authorization/userAuth.token")
 
-router.post("/addCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.addCategory);
+router.post("/addCategory", auth.verifyToken, upload.single('catImage'), categoryController.addCategory);
 
-router.get("/viewCategory", tokenVerification.varifyToken, categoryController.getCategory);
+router.get("/viewCategory", auth.verifyToken, categoryController.getCategory);
 
-router.post("/deleteCategory", tokenVerification.varifyToken, categoryController.deleteCategory);
+router.post("/deleteCategory", auth.verifyToken, categoryController.deleteCategory);
 
-router.post("/updateCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.updateCategory);
+router.post("/updateCategory", auth.verifyToken, upload.single('catImage'), categoryController.updateCategory);
 module.exports = router;

@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
 const adminController = require("../../controller/admin-controller/admin.ctrl");
+const auth = require("../../Authorization/userAuth.token")
 
 router.post(
   "/signin",
-  body("email", "Inalid Email Id").isEmail(),
+  body("email",auth.verifyToken, "Inalid Email Id").isEmail(),
   body("password").not().isEmpty(),
   adminController.signin
 );
