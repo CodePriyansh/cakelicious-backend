@@ -44,7 +44,7 @@ exports.signin = (request, response, next) => {
             console.log(result);
             if (result.length) {
                 let paylod = { subject: result._id };
-                let token = jwt.sign(paylod, 'abcdefghijklm');
+                let token = jwt.sign(paylod, 'secret');
                 return response.status(200).json({
                     status: 'login success',
                     current_user: result,

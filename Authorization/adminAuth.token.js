@@ -9,7 +9,7 @@ exports.varifyToken = (req, res, next) => {
             return res.status(401).send("unauthorished1 request");
 
         let token = req.headers.authorization.split(" ")[1];
-        let paylod = jwt.verify(token, "abcdefghijklm");
+        let paylod = jwt.verify(token, "secret");
         console.log(paylod);
         next();
     } catch (err) {
