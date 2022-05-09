@@ -1,11 +1,13 @@
 var express = require('express');
 var path = require('path');
 const mongoose = require('mongoose');
+const cors = require('cors')
 mongoose.connect("mongodb+srv://CodePriyanshu786:pathak123@mucluster.utw9l.mongodb.net/test-cakelicious?retryWrites=true&w=majority");
 const bodyparser = require('body-parser')
 const port = process.env.PORT || 3000
 
 var app = express();
+app.use(cors());
 app.use(bodyparser.json())
 
 
