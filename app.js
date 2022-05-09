@@ -23,7 +23,7 @@ var supportRouter = require('./routes/admin/support.route');
 var userRouter = require('./routes/customer/customer.route');
 var cartRouter = require('./routes/customer/cart.route');
 var productRouter = require('./routes/customer/product.route');
-var orderController = require('./routes/customer/order.route');
+var orderRouter = require('./routes/customer/order.route');
 var wishlistRouter = require('./routes/customer/wishlist.route');
 
 app.use(express.json());
@@ -45,7 +45,7 @@ app.use('/support-admin', supportRouter);
 // user side Routes
 app.use('/customer', userRouter);
 app.use('/cart', cartRouter);
-app.use('/order', orderController);
+app.use('/order', orderRouter);
 app.use('/product', productRouter);
 app.use('/wishlist', wishlistRouter);
 
