@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
-const fast2sms = require("fast-two-sms");
+// const fast2sms = require("fast-two-sms");
 
 
 const domain = "http://localhost:3000";
@@ -37,7 +37,6 @@ exports.Signup = async (request, response) => {
       otp:"",
     });
     if (result) {
-      console.log(result)
       console.log(process.env.EMAIL_TOKEN_KEY)
       let verifyToken = jwt.sign(
         {
@@ -75,19 +74,15 @@ exports.Signup = async (request, response) => {
           console.log("Email sent successfully");
         }
       });
-      return response.status(200).json({
-        msg:
-          "Congratulations :" +
-          result.name +
-          ", Your account has been created successfully, Please check your inbox to activate your account.",
-      });
-    } else {
+      return response.status(200).json(result);
+    } 
+    else {
       return response.status(500).json(error);
     }
   } else {
-    return response.status(500).json({
+    return response.status(404).json({
       error:
-        "This email is already assigned with another account, Please try another one!",
+        "This email is already assigned with another account, Please try another one!!",
     });
   }
 };
@@ -148,8 +143,10 @@ exports.Signin = async (request, response) => {
   console.log("Result of login: ", result); 
   if (result) {
     console.log(result.status)
+    console.log(result.password)
     if (result.status) {
-      const match = await bcrypt.compare(password, result.password);
+      const match = await bcrypt.compare(password,result.password);
+      console.log("hello")
       console.log("Bcrypt: ", match)
       if (match) {
         const token = jwt.sign(
