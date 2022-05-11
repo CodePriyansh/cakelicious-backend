@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post("/addOccassion", tokenVerification.varifyToken, upload.single('occImage'), occassionController.addOccassion);
+router.post("/addOccassion",tokenVerification.varifyToken,  upload.single('occImage'), occassionController.addOccassion);
 
-router.get("/viewOccassion", tokenVerification.varifyToken, occassionController.getOccassion);
+router.get("/viewOccassion",tokenVerification.varifyToken,  occassionController.getOccassion);
 module.exports = router;

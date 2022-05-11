@@ -109,4 +109,34 @@ exports.viewReview = (request,response)=>{
     return response.status(500).json(err)
   })
 }
+exports.searchProduct = (request,response)=>{
+  let regex = new RegExp(request.params.text,"i");
+  Product.find().or([
+    {
+      prodName: regex,
+    },
+    {
+      prodDescription: regex
+    },
+    {
+      flavour: regex
+    }
+  ]).then(result=>{
+    return response.status(200).json(result);
+  })
+  .catch(err=>{
+    console.log(err);
+    return response.status(500).json({message: 'Error..'});
+  })
+};
 
+exports.categorybyproduct = (request,response)=>{
+  console.log("skndcsk")
+  console.log(request.body.cid)
+  Product.find({categoryId: request.params.cid})
+  .then(result=>{
+     return response.status(200).json(result);
+  }).catch(err=>{
+     return response.status(500).json({message: 'internal server error'});
+  })
+};
