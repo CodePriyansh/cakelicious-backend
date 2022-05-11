@@ -15,13 +15,14 @@ let storage = multer.diskStorage({
 let upload = multer({storage: storage})
 
 
+
 router.post('/sign-up', customerController.Signup)
 
 router.post('/sign-in', customerController.Signin)
 
 router.get('/verify-email/:id', customerController.verifyEmail)
 
-// router.post('/login-with-google', customerController.loginWithGoogle)
+router.post('/login-with-google', customerController.loginWithGoogle)
 
 router.post('/verify-email-resend', customerController.resendVerifyEmail)
 
