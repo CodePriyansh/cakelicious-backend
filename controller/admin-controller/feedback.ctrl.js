@@ -53,7 +53,7 @@ exports.addFeedback = (request, response) => {
 };
 
 exports.viewFeedback = (request, response)=>{
-    Feedback.find().then((result)=>{
+    Feedback.find().populate('customer').then((result)=>{
         return response.status(200).json(result);
     }).catch((err)=>{
         return response.status(500).json(err)
