@@ -20,4 +20,5 @@ router.get("/viewCategory", auth.verifyToken, categoryController.getCategory);
 router.post("/deleteCategory", auth.verifyToken, categoryController.deleteCategory);
 
 router.post("/updateCategory", auth.verifyToken, upload.single('catImage'), categoryController.updateCategory);
+
 module.exports = router;

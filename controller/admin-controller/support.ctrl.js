@@ -24,7 +24,7 @@ exports.addQuery = (request, response) => {
 };
 
 exports.viewQuery = (request, response) => {
-  Support.find()
+  Support.find().populate('customer')
     .then((result) => {
       return response.status(200).json(result);
     })
