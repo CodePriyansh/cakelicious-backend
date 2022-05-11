@@ -49,6 +49,10 @@ const customerSchema = new mongoose.Schema({
   otp: {
     type: String,
     default: "",
+  },
+  isLoggedIn:{
+    type:Boolean,
+    default:false
   }
 });
 
