@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const tokenVerification = require("../../Authorization/adminAuth.token")
+const auth = require("../../Authorization/userAuth.token")
 
 const supportController = require('../../controller/admin-controller/support.ctrl')
 
-router.post('/addQuery',tokenVerification.varifyToken,supportController.addQuery)
-router.get('/viewQuery',tokenVerification.varifyToken,supportController.viewQuery)
-router.post('/giveSupport',tokenVerification.varifyToken,supportController.giveSupport)
+router.post('/addQuery',auth.verifyToken,supportController.addQuery)
+router.get('/viewQuery',auth.verifyToken,supportController.viewQuery)
+router.post('/giveSupport',auth.verifyToken,supportController.giveSupport)
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../../controller/admin-controller/product.ctrl')
-const tokenVerification = require("../../Authorization/adminAuth.token")
+const auth = require("../../Authorization/userAuth.token")
 
 const multer = require('multer');
 var storage = multer.diskStorage({
@@ -12,22 +12,26 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post("/addProduct",tokenVerification.varifyToken, upload.array('prodImages'), productController.addProduct);
 
-router.get("/viewProduct",tokenVerification.varifyToken,  productController.getProduct);
+router.post("/addProduct", auth.verifyToken, upload.array('prodImages'), productController.addProduct);
 
-router.post("/deleteProduct",tokenVerification.varifyToken,  productController.deleteProduct);
+router.get("/viewProduct", auth.verifyToken, productController.getProduct);
 
-router.get("/textsearch-product/:text",tokenVerification.varifyToken,productController.searchProduct);
-
-router.get('/category-product/:cid',tokenVerification.varifyToken,productController.categorybyproduct);
+router.post("/deleteProduct", auth.verifyToken, productController.deleteProduct);
 
 
-//  router.post("/updateProduct",tokenVerification.varifyToken, upload.array('prodsImages'), productController.updateProduct);
+
+router.get("/textsearch-product/:text",auth.verifyToken,productController.searchProduct);
+
+router.get('/category-product/:cid',auth.verifyToken,productController.categorybyproduct);
 
 
-router.post("/deleteOneReview",tokenVerification.varifyToken , productController.deleteOneReview)
-router.get("/viewReview" ,tokenVerification.varifyToken, productController.viewReview)
+//  router.post("/updateProduct",auth.verifyToken, upload.array('prodsImages'), productController.updateProduct);
+
+
+
+router.post("/deleteOneReview" , auth.verifyToken, productController.deleteOneReview)
+router.get("/viewReview" , auth.verifyToken, productController.viewReview)
 
 
 
