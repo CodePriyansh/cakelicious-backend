@@ -12,17 +12,22 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post("/addProduct", tokenVerification.varifyToken, upload.array('prodImages'), productController.addProduct);
+router.post("/addProduct",tokenVerification.varifyToken, upload.array('prodImages'), productController.addProduct);
 
-router.get("/viewProduct", tokenVerification.varifyToken, productController.getProduct);
+router.get("/viewProduct",tokenVerification.varifyToken,  productController.getProduct);
 
-router.post("/deleteProduct", tokenVerification.varifyToken, productController.deleteProduct);
+router.post("/deleteProduct",tokenVerification.varifyToken,  productController.deleteProduct);
+
+router.get("/textsearch-product/:text",tokenVerification.varifyToken,productController.searchProduct);
+
+router.get('/category-product/:cid',tokenVerification.varifyToken,productController.categorybyproduct);
+
 
 //  router.post("/updateProduct",tokenVerification.varifyToken, upload.array('prodsImages'), productController.updateProduct);
 
 
-router.post("/deleteOneReview" , tokenVerification.varifyToken, productController.deleteOneReview)
-router.get("/viewReview" , tokenVerification.varifyToken, productController.viewReview)
+router.post("/deleteOneReview",tokenVerification.varifyToken , productController.deleteOneReview)
+router.get("/viewReview" ,tokenVerification.varifyToken, productController.viewReview)
 
 
 

@@ -13,11 +13,11 @@ const categoryController = require('../../controller/admin-controller/category.c
 
 const tokenVerification = require("../../Authorization/adminAuth.token")
 
-router.post("/addCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.addCategory);
+router.post("/addCategory",tokenVerification.varifyToken,  upload.single('catImage'), categoryController.addCategory);
 
-router.get("/viewCategory", tokenVerification.varifyToken, categoryController.getCategory);
+router.get("/viewCategory",tokenVerification.varifyToken,  categoryController.getCategory);
 
-router.post("/deleteCategory", tokenVerification.varifyToken, categoryController.deleteCategory);
+router.post("/deleteCategory",tokenVerification.varifyToken,categoryController.deleteCategory);
 
-router.post("/updateCategory", tokenVerification.varifyToken, upload.single('catImage'), categoryController.updateCategory);
+router.post("/updateCategory",tokenVerification.varifyToken, upload.single('catImage'), categoryController.updateCategory);
 module.exports = router;
