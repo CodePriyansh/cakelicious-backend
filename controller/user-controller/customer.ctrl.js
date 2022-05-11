@@ -21,7 +21,7 @@ const Customer = require("../../models/customer-model/user.model");
 
 
 exports.Signup = async (request, response) => {
-  const { name, email, mobile, password } = request.body;
+  const { email, name, mobile, password } = request.body;
   const hash = await bcrypt.hash(password, 12);
   let oldCustomer = await Customer.findOne({ email: email, mobile: mobile });
   console.log("Old Customer: ", oldCustomer); 
@@ -331,3 +331,12 @@ exports.Profile = async (request, response) => {
     });
   }
 };
+
+exports.loginWithGoogle = (request, response)=>{
+  Customer.findOne({email:request.body.email}).
+  then(result=>{
+    return response.status(200).json(result);
+  }).catch(err=>{
+    return response.status(500).json(err)
+  })
+}

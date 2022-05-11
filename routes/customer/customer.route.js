@@ -22,7 +22,7 @@ router.post('/sign-in', customerController.Signin)
 
 router.get('/verify-email/:id', customerController.verifyEmail)
 
-// router.post('/login-with-google', customerController.loginWithGoogle)
+router.post('/login-with-google', customerController.loginWithGoogle)
 
 router.post('/verify-email-resend', customerController.resendVerifyEmail)
 
