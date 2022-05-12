@@ -337,6 +337,7 @@ exports.Profile = async (request, response) => {
     Customer.findOne({
       email: email,
     })
+    // lksdflksdfkdsklf
       .then((result) => {
         console.log(result);
         if (result) {
