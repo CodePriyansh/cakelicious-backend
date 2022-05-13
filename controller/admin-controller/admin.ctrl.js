@@ -3,7 +3,6 @@ const { validationResult } = require("express-validator");
 const Admin = require("../../models/admin-models/admin-model");
 const jwt = (require = require("jsonwebtoken"));
 
-
 exports.signup = (request, response, next) => {
   const errors = validationResult(request);
   if (!errors.isEmpty())
@@ -32,7 +31,7 @@ exports.signin = (request, response, next) => {
     return response.status(400).json({ errors: errors.array() });
 
   const { email, password } = request.body;
-  Admin.find({
+  Admin.findOne({
     email: email,
     password: password,
   })
@@ -55,10 +54,13 @@ exports.signin = (request, response, next) => {
         result.token = token;
         console.log("Token: ", token);
         return response.status(200).json({
-          msg: "Welcome " + result.name + "! Your token is: " + token,
+          status: 'login success',
+          current_user: result,
+          token: token
         });
-      } else {
-        response.status(400).json({ msg: "psw incorrect" });
+      } 
+      else {
+        response.status(400).json(err);
       }
     })
     .catch((err) => {
