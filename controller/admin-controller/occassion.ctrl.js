@@ -29,7 +29,7 @@ const uploadFile = async (filename) => {
 
   Occassion.create({
             occName: request.body.occName,
-            occImage: "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/"+ request.file.filename+"?alt=media&token=hello"
+            occImage: "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/"+ request.file.filename+"?alt=media&token=hello"
         })
         .then(result => {
             return response.status(201).json(result);

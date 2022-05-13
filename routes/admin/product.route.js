@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 
-router.post("/addProduct", auth.verifyToken, upload.array('prodImages'), productController.addProduct);
+router.post("/addProduct",auth.verifyToken, upload.array('prodImages'), productController.addProduct);
 
 router.get("/viewProduct", auth.verifyToken, productController.getProduct);
 
