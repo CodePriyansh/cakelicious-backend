@@ -20,10 +20,10 @@ const uploadFile = async (filename) => {
   console.log(`${filename} uploaded to ${bucketName}.`);
 };
 exports.addProduct = (request, response, next) => {
-  // for(let i=0;i<4;i++){
-  //   console.log(request.files[i].filename)
-  //   uploadFile(path.join("public/images/") + request.files[i].filename);
-  // }
+  for(let i=0;i<4;i++){
+    console.log(request.files[i].filename)
+    uploadFile(path.join("public/images/") + request.files[i].filename);
+  }
 
   console.log(request.body);
   console.log(request.files);
@@ -32,19 +32,19 @@ exports.addProduct = (request, response, next) => {
     OccassionId: request.body.occassionId,
     prodName: request.body.prodName,
     prodImage1:
-      "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" +
+      "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
       request.files[0].filename +
       "?alt=media&token=hello",
     prodImage2:
-      "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" +
+      "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
       request.files[1].filename +
       "?alt=media&token=hello",
     prodImage3:
-      "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" +
+      "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
       request.files[2].filename +
       "?alt=media&token=hello",
     prodImage4:
-      "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" +
+      "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
       request.files[3].filename +
       "?alt=media&token=hello",
     prodPrice: request.body.prodPrice,

@@ -26,11 +26,11 @@ const uploadFile = async (filename) => {
 
 exports.addCategory = (request, response, next) => {
 
-    // uploadFile(path.join("public/images/") + request.file.filename)
+    uploadFile(path.join("public/images/") + request.file.filename)
 
     Category.create({
         catName: request.body.catName,
-        catImage: "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" + request.file.filename + "?alt=media&token=hello"
+        catImage: "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" + request.file.filename + "?alt=media&token=hello"
     })
         .then(result => {
             return response.status(201).json(result);
@@ -77,7 +77,7 @@ exports.updateCategory = (req, response, next) => {
     let newImage;
     if (req.file) {
 
-        newImage = "https://firebasestorage.googleapis.com/v0/b/storeimges.appspot.com/o/" + req.file.filename + "?alt=media&token=hello";
+        newImage = "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" + req.file.filename + "?alt=media&token=hello";
         uploadFile(path.join("public/images/") + req.file.filename)
 
         request({
@@ -99,7 +99,7 @@ exports.updateCategory = (req, response, next) => {
         }
     }).then(result => {
         if (result.modifiedCount) {
-            console.log("csjbvjdsbjksbjkdvbj")
+          
             return response.status(200).json(result);
         }
         else
