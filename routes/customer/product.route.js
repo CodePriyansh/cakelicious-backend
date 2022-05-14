@@ -5,12 +5,12 @@ const productController = require('../../controller/user-controller/product.ctrl
 
 const auth = require('../../Authorization/userAuth.token')
 
-router.post("/getProductBycategory/:categoryId", auth.verifyToken, productController.getProductByCategory);
+router.get("/getProductBycategory/:categoryId", productController.getProductByCategory);
 
-router.post("/getProductBycategory/:pId", auth.verifyToken, productController.getProductById);
+router.get("/getProductById/:pId", productController.getProductById);
 
-router.get("/searchProduct/:text", auth.verifyToken, productController.searchProduct)
+router.get("/searchProduct/:text", productController.searchProduct)
 
-router.post("/addReview" , auth.verifyToken, productController.addReview)
+router.post("/addReview" , productController.addReview)
 
 module.exports = router;

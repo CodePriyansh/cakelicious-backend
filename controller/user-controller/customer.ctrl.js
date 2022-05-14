@@ -165,7 +165,9 @@ exports.Signin = async (request, response) => {
         result.token = token;
         console.log("Token: ", token);
         return response.status(200).json({
-          msg: "Welcome " + result.name + "! Your token is: " + token,
+          status:"login-success",
+          current_user:result,
+          token:token
         });
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
@@ -362,7 +364,7 @@ exports.Profile = async (request, response) => {
             token:token
           });
         } else {
-          response.status(400).json({ msg: "psw incorrect" });
+          response.status(400).json({ msg: "Email Doesn't match" });
         }
       })
       .catch((err) => {
