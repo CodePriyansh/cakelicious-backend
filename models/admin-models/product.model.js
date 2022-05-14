@@ -37,9 +37,7 @@ const productSchema = new mongoose.Schema({
     prodDescription: {
         type: String
     },
-    flavour: {
-        type: String
-    },
+    
     prodReview: [
         {
             userId: {

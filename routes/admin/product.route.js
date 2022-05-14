@@ -15,7 +15,7 @@ var upload = multer({ storage: storage });
 
 router.post("/addProduct",auth.verifyToken, upload.array('prodImages'), productController.addProduct);
 
-router.get("/viewProduct", auth.verifyToken, productController.getProduct);
+router.get("/viewProduct", productController.getProduct);
 
 router.post("/deleteProduct", auth.verifyToken, productController.deleteProduct);
 
@@ -25,7 +25,7 @@ router.get("/textsearch-product/:text",auth.verifyToken,productController.search
 
 router.get('/category-product/:cid',auth.verifyToken,productController.categorybyproduct);
 
-
+router.get('/occassion-product/:oid',auth.verifyToken,productController.occassionbyproduct);
 //  router.post("/updateProduct",auth.verifyToken, upload.array('prodsImages'), productController.updateProduct);
 
 
