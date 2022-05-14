@@ -25,7 +25,7 @@ router.get("/textsearch-product/:text",auth.verifyToken,productController.search
 
 router.get('/category-product/:cid',auth.verifyToken,productController.categorybyproduct);
 
-
+router.get('/occassion-product/:oid',auth.verifyToken,productController.occassionbyproduct);
 //  router.post("/updateProduct",auth.verifyToken, upload.array('prodsImages'), productController.updateProduct);
 
 

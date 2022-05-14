@@ -49,7 +49,6 @@ exports.addProduct = (request, response, next) => {
       "?alt=media&token=hello",
     prodPrice: request.body.prodPrice,
     prodDescription: request.body.prodDescription,
-    flavour: request.body.flavour,
     discount: request.body.discount,
   })
     .then((result) => {
@@ -117,9 +116,6 @@ exports.searchProduct = (request,response)=>{
     },
     {
       prodDescription: regex
-    },
-    {
-      flavour: regex
     }
   ]).then(result=>{
     return response.status(200).json(result);
@@ -131,9 +127,21 @@ exports.searchProduct = (request,response)=>{
 };
 
 exports.categorybyproduct = (request,response)=>{
-  console.log("skndcsk")
+ 
   console.log(request.body.cid)
   Product.find({categoryId: request.params.cid})
+  .then(result=>{
+     return response.status(200).json(result);
+  }).catch(err=>{
+     return response.status(500).json({message: 'internal server error'});
+  })
+};
+
+
+exports.occassionbyproduct = (request,response)=>{
+
+  console.log(request.body.oid)
+  Product.find({occassionId: request.params.oid})
   .then(result=>{
      return response.status(200).json(result);
   }).catch(err=>{
