@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 mongoose.connect("mongodb+srv://CodePriyanshu786:pathak123@mucluster.utw9l.mongodb.net/Cakelicious-main?retryWrites=true&w=majority");
 const bodyparser = require('body-parser')
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 
 var app = express();
 app.use(cors());
