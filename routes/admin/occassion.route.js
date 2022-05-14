@@ -15,6 +15,6 @@ var upload = multer({ storage: storage });
 
 router.post("/addOccassion", auth.verifyToken, upload.single('occImage'), occassionController.addOccassion);
 
-router.get("/viewOccassion", auth.verifyToken, occassionController.getOccassion);
+router.get("/viewOccassion", occassionController.getOccassion);
 
 module.exports = router;
