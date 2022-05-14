@@ -7,7 +7,15 @@ const occassionSchema = mongoose.Schema({
     },
     occImage : {
         type:String,
-  
+        required:true,
+    },
+    occBanner : {
+        type:String,
+        required:true
+    },
+    occDescription:{
+        type:String,
+        required:true
     }
 })
 
