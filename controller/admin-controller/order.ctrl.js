@@ -1,6 +1,5 @@
 const Order = require('../../models/customer-model/order.model')
 
-
 exports.orderDetail = (request, response) => {
     Order.find().populate('customer').populate('orderedItem.ProductId').exec().
     then(results => {

@@ -10,7 +10,6 @@ var app = express();
 app.use(cors());
 app.use(bodyparser.json())
 
-
 // admin's routerse import 
 var adminRouter = require('./routes/admin/admin.route');
 var categoryRouter = require('./routes/admin/category.route');
