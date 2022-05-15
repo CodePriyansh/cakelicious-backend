@@ -165,7 +165,9 @@ exports.Signin = async (request, response) => {
         result.token = token;
         console.log("Token: ", token);
         return response.status(200).json({
-          msg: "Welcome " + result.name + "! Your token is: " + token,
+          status:"login-success",
+          current_user:result,
+          token:token
         });
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
@@ -332,11 +334,43 @@ exports.Profile = async (request, response) => {
   }
 };
 
-exports.loginWithGoogle = (request, response)=>{
-  Customer.findOne({email:request.body.email}).
-  then(result=>{
-    return response.status(200).json(result);
-  }).catch(err=>{
-    return response.status(500).json(err)
-  })
-}
+  exports.loginWithGoogle = (request, response, next) => {
+    const { email } = request.body;
+    Customer.findOne({
+      email: email,
+    })
+    // lksdflksdfkdsklf
+      .then((result) => {
+        console.log(result);
+        if (result) {
+          const token = jwt.sign(
+            {
+              customer: {
+                _id: result._id,
+                email: result.email,
+                name: result.name,
+              },
+            },
+            process.env.TOKEN_KEY,
+            {
+              expiresIn: "5D",
+            }
+          );
+          result.token = token;
+          console.log("Token: ", token);
+          return response.status(200).json({
+            status:"login-success",
+            current_user:result,
+            token:token
+          });
+        } else {
+          response.status(400).json({ msg: "Email Doesn't match" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return response
+          .status(500)
+          .json({ message: "Oops Something Went Wrong" });
+      });
+  };

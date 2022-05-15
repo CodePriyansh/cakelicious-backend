@@ -99,7 +99,7 @@ exports.updateCategory = (req, response, next) => {
         }
     }).then(result => {
         if (result.modifiedCount) {
-          
+
             return response.status(200).json(result);
         }
         else

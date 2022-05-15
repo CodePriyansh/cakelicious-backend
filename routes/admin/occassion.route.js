@@ -16,6 +16,7 @@ router.post("/delete",occassionController.deleteOccassion);
 
 router.post("/addOccassion", upload.array('occImages'), occassionController.addOccassion);
 
-router.get("/viewOccassion",occassionController.getOccassion);
+
+router.get("/viewOccassion", occassionController.getOccassion);
 
 module.exports = router;

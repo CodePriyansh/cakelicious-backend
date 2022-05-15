@@ -25,7 +25,7 @@ router.get('/verify-email/:id', customerController.verifyEmail)
 router.post('/login-with-google', customerController.loginWithGoogle)
 
 router.post('/verify-email-resend', customerController.resendVerifyEmail)
-
+    
 router.post('/reset-password', customerController.resetPassword)
 
 router.post('/verify-otp/:id', customerController.verifyOTP)
