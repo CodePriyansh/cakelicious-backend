@@ -35,9 +35,6 @@ exports.addReview = async (request, response) => {
         {
           prodDescription: regex,
         },
-        {
-          prodDescription: regex,
-        },
       ])
       .then((result) => {
         return response.status(200).json(result);

@@ -5,6 +5,6 @@ const customerController = require('../../controller/admin-controller/customer.c
 const auth = require("../../Authorization/userAuth.token")
 
 
-router.get("/viewCustomer", auth.verifyToken, customerController.getCustomer);
+router.get("/viewCustomer", customerController.getCustomer);
 
 module.exports = router;
