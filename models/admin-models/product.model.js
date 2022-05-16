@@ -10,8 +10,9 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'occassion'
     },
-    flavourId: {
-        type:mongoose.Schema.Types.ObjectId,
+
+    flavourId:{
+        type: mongoose.Schema.Types.ObjectId,
         ref:'flavour'
     },
     prodName: {
