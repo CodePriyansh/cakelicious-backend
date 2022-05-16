@@ -25,10 +25,10 @@ const uploadFile = async (filename) => {
 
   exports.addOccassion = (request, response, next) => {
   
-    for(let i=0;i<2;i++){
-      console.log(request.files[i].filename)
-      uploadFile(path.join("public/images/") + request.files[i].filename);
-    }
+    // for(let i=0;i<2;i++){
+    //   console.log(request.files[i].filename)
+    //   uploadFile(path.join("public/images/") + request.files[i].filename);
+    // }
   Occassion.create({
            
     occDescription: request.body.occDescription,
@@ -49,6 +49,29 @@ const uploadFile = async (filename) => {
         });
 }
 
+
+exports.deleteOccassion = (request, response) => {
+
+
+Occassion.deleteOne({ _id: request.body.id })
+      .then(result => {
+        if (result.deletedCount){
+        Product.delete({ occassionId: request.body.occassionId })
+        .then((result) => {
+          return response.status(200).json({ message: "success" });
+        }).catch((err) => {          
+          return response.status(500).json(err)
+        })
+      }else
+        return response.status(200).json({ message: 'Occassion not deleted' });
+          
+      })
+      .catch(err => {
+          console.log(err)
+          return response.status(500).json({ message: 'Something went wrong products not deleted' });
+      });
+}
+
 exports.getOccassion = (request, response) => {
     Occassion.find().
     then(results => {
@@ -61,24 +84,16 @@ exports.getOccassion = (request, response) => {
 }
 
 
-exports.deleteOccassion = (request, response) => {
-
-
-  Occassion.deleteMany({ _id: request.body.id })
-      .then(result => {
-          Occassion.deleteMany({ occassionId: request.body.id }).then((result) => {
-              console.log(result)
-              if (result.deletedCount)
-                  return response.status(200).json({ message: 'success' });
-              else
-                  return response.status(200).json({ message: 'product not deleted' });
-          }).catch((err) => {
-              return response.status(500).json({ message: 'Something went wrong products not deleted' });
-          })
-
-      })
-      .catch(err => {
-          console.log(err)
-          return response.status(500).json({ message: 'Something went wrong products not deleted' });
-      });
-}
+exports.deleteOcc = (request, response) => {
+  Occassion.deleteOne({ _id: request.body.id })
+    .then((result) => {
+      console.log(result);
+      if (result.deletedCount)
+        return response.status(200).json({ message: "success" });
+      else return response.status(204).json({ message: "not deleted" });
+    })
+    .catch((err) => {
+      console.log(err);
+      return response.status(500).json({ message: "Something went wrong" });
+    });
+};
