@@ -25,10 +25,10 @@ const uploadFile = async (filename) => {
 
   exports.addOccassion = (request, response, next) => {
   
-    // for(let i=0;i<2;i++){
-    //   console.log(request.files[i].filename)
-    //   uploadFile(path.join("public/images/") + request.files[i].filename);
-    // }
+    for(let i=0;i<2;i++){
+      console.log(request.files[i].filename)
+      uploadFile(path.join("public/images/") + request.files[i].filename);
+    }
   Occassion.create({
            
     occDescription: request.body.occDescription,
