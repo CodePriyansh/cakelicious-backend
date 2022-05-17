@@ -30,6 +30,7 @@ exports.addProduct = (request, response, next) => {
   Product.create({
     categoryId: request.body.categoryId,
     OccassionId: request.body.occassionId,
+    flavourId:request.body.flavourId,
     prodName: request.body.prodName,
     prodImage1:
       "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
@@ -140,12 +141,12 @@ exports.categorybyproduct = (request,response)=>{
 
 exports.occassionbyproduct = (request,response)=>{
 
-  console.log(request.body.oid)
-  Product.find({occassionId: request.params.oid})
+  console.log(request.params.oid)
+  Product.find({OccassionId: request.params.oid})
   .then(result=>{
      return response.status(200).json(result);
   }).catch(err=>{
-     return response.status(500).json({message: 'internal server error'});
+     return response.status(500).json(err);
   })
 };
 

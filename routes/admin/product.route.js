@@ -15,15 +15,15 @@ var upload = multer({ storage: storage });
 
 router.post("/addProduct", upload.array('prodImages'), productController.addProduct);
 
-router.get("/viewProduct", productController.getProduct);
+router.get("/viewProduct",auth.verifyToken, productController.getProduct);
 
 router.post("/deleteProduct", auth.verifyToken, productController.deleteProduct);
 
 router.get("/textsearch-product/:text",auth.verifyToken,productController.searchProduct);
 
-router.get('/category-product/:cid',auth.verifyToken,productController.categorybyproduct);
+router.get('/category-product/:cid',productController.categorybyproduct);
 
-router.get('/occassion-product/:oid',auth.verifyToken,productController.occassionbyproduct);
+router.get('/occassion-product/:oid',productController.occassionbyproduct);
 //  router.post("/updateProduct",auth.verifyToken, upload.array('prodsImages'), productController.updateProduct);
 
 router.post("/deleteOneReview" , auth.verifyToken, productController.deleteOneReview)

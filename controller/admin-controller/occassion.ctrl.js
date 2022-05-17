@@ -42,11 +42,34 @@ const uploadFile = async (filename) => {
            "?alt=media&token=hello",
        })
         .then(result => {
-            return response.status(201).json(result);
+            return response.status(200).json(result);
         })
         .catch(err => {
-            return response.status(403).json({ message: "Oops! Something went wrong.." });
+            return response.status(400).json({ message: "Oops! Something went wrong.." });
         });
+}
+
+
+exports.deleteOccassion = (request, response) => {
+
+
+Occassion.deleteOne({ _id: request.body.id })
+      .then(result => {
+        if (result.deletedCount){
+        Product.delete({ occassionId: request.body.occassionId })
+        .then((result) => {
+          return response.status(200).json({ message: "success" });
+        }).catch((err) => {          
+          return response.status(500).json(err)
+        })
+      }else
+        return response.status(200).json({ message: 'Occassion not deleted' });
+          
+      })
+      .catch(err => {
+          console.log(err)
+          return response.status(500).json({ message: 'Something went wrong products not deleted' });
+      });
 }
 
 exports.getOccassion = (request, response) => {
@@ -81,4 +104,14 @@ exports.deleteOccassion = (request, response) => {
           console.log(err)
           return response.status(500).json({ message: 'Something went wrong products not deleted' });
       });
+}
+
+
+exports.getOneOccasssion = (request, response)=>{
+
+  Occassion.findOne({_id:request.params.occassionId}).then((result)=>{
+    response.status(200).json(result)
+  }).catch((err) => {
+    response.status(500).json(err)
+  })
 }
