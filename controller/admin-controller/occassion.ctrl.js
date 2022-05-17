@@ -49,6 +49,29 @@ const uploadFile = async (filename) => {
         });
 }
 
+
+exports.deleteOccassion = (request, response) => {
+
+
+Occassion.deleteOne({ _id: request.body.id })
+      .then(result => {
+        if (result.deletedCount){
+        Product.delete({ occassionId: request.body.occassionId })
+        .then((result) => {
+          return response.status(200).json({ message: "success" });
+        }).catch((err) => {          
+          return response.status(500).json(err)
+        })
+      }else
+        return response.status(200).json({ message: 'Occassion not deleted' });
+          
+      })
+      .catch(err => {
+          console.log(err)
+          return response.status(500).json({ message: 'Something went wrong products not deleted' });
+      });
+}
+
 exports.getOccassion = (request, response) => {
     Occassion.find().
     then(results => {

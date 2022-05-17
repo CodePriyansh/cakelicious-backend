@@ -30,6 +30,7 @@ exports.addProduct = (request, response, next) => {
   Product.create({
     categoryId: request.body.categoryId,
     OccassionId: request.body.occassionId,
+    flavourId:request.body.flavourId,
     prodName: request.body.prodName,
     prodImage1:
       "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" +
