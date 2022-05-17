@@ -42,17 +42,17 @@ const uploadFile = async (filename) => {
            "?alt=media&token=hello",
        })
         .then(result => {
-            return response.status(201).json(result);
+            return response.status(200).json(result);
         })
         .catch(err => {
-            return response.status(403).json({ message: "Oops! Something went wrong.." });
+            return response.status(400).json({ message: "Oops! Something went wrong.." });
         });
 }
 
 exports.getOccassion = (request, response) => {
     Occassion.find().
     then(results => {
-        console.log(results)
+        // console.log(results)
             return response.status(200).json(results);
         })
         .catch(err => {
@@ -81,4 +81,14 @@ exports.deleteOccassion = (request, response) => {
           console.log(err)
           return response.status(500).json({ message: 'Something went wrong products not deleted' });
       });
+}
+
+
+exports.getOneOccasssion = (request, response)=>{
+
+  Occassion.findOne({_id:request.params.occassionId}).then((result)=>{
+    response.status(200).json(result)
+  }).catch((err) => {
+    response.status(500).json(err)
+  })
 }

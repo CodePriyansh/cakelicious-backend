@@ -140,11 +140,11 @@ exports.categorybyproduct = (request,response)=>{
 
 exports.occassionbyproduct = (request,response)=>{
 
-  console.log(request.body.oid)
-  Product.find({occassionId: request.params.oid})
+  console.log(request.params.oid)
+  Product.find({OccassionId: request.params.oid})
   .then(result=>{
      return response.status(200).json(result);
   }).catch(err=>{
-     return response.status(500).json({message: 'internal server error'});
+     return response.status(500).json(err);
   })
 };

@@ -19,4 +19,6 @@ router.post("/addOccassion", upload.array('occImages'), occassionController.addO
 
 router.get("/viewOccassion", occassionController.getOccassion);
 
+router.get("/viewOneOccassion/:occassionId",occassionController.getOneOccasssion);
+
 module.exports = router;

@@ -64,7 +64,7 @@ exports.deleteCategory = (request, response) => {
 exports.getCategory = (request, response) => {
     Category.find().
         then(results => {
-            console.log(results)
+            // console.log(results)
             return response.status(200).json(results);
         })
         .catch(err => {
