@@ -26,19 +26,20 @@ const uploadFile = async (filename) => {
 }
 
 
-exports.addtoflavour = (request, response) => {
+exports.addToFlavour = (request, response) => {
     let flavourname = request.body.flavourname;
     let flavourimage = "https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" + request.file.filename + "?alt=media&token=hello";
 
-    uploadFile(path.join("public/images/") + request.file.filename);
+    // uploadFile(path.join("public/images/") + request.file.filename);
 
     flavourModel.create({ flavourname: flavourname, flavourimage: flavourimage }).then(result => {
         return response.status(201).json(result)
     }).catch(err => {
+        console.log(err)
         return response.status(500).json({ err })
     })
 }
-exports.findtheflavour = (request, response) => {
+exports.findTheFlavour = (request, response) => {
     console.log(request.body)
     let flavourname = request.body.flavourname;
     flavourModel.findOne({ flavourname: flavourname }).
@@ -51,7 +52,7 @@ exports.findtheflavour = (request, response) => {
         })
 }
 
-exports.findalldata = (request, response) => {
+exports.findAllData = (request, response) => {
     console.log(request.body)
     flavourModel.find().
         then(result => {
@@ -62,14 +63,14 @@ exports.findalldata = (request, response) => {
             return response.status(500).json({ err })
         })
 }
-exports.Deletetheflavour = (request, response) => {
+exports.deleteTheFlavour = (request, response) => {
     flavourModel.deleteOne({ _id: request.body.fid }).then(result => {
         return response.status(201).json(result)
     }).catch(err => {
         return response.status(500).json({ err: "invalid" });
     })
 }
-exports.updatetheflavour = (request, response) => {
+exports.updateTheFlavour = (request, response) => {
     flavourModel.updateOne({ _id: request.body.fid },
         { $set: { flavourname: request.body.name } }).then(result => {
             return response.status(201).json(result);

@@ -14,11 +14,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post("/addflavour", upload.single('flavorimage'), flavourController.addtoflavour);
-router.post("/findflavour", flavourController.findtheflavour);
-router.get("/findall", flavourController.findalldata);
-router.post("/deleteflavour", flavourController.Deletetheflavour);
-router.post("/updateflavour", flavourController.updatetheflavour);
+router.post("/addflavour", upload.single('flavourimage'), flavourController.addToFlavour);
+router.post("/findflavour", flavourController.findTheFlavour);
+router.get("/findall", flavourController.findAllData);
+router.post("/deleteflavour", flavourController.deleteTheFlavour);
+router.post("/updateflavour", flavourController.updateTheFlavour);
 
 
 module.exports = router;

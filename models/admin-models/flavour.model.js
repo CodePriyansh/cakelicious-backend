@@ -7,7 +7,8 @@ const flavourSchema = new mongoose.Schema({
     flavourimage: {
         type: String,
         required: true,
-    }
+    },
+    
 })
 
 module.exports = mongoose.model('flavour', flavourSchema)

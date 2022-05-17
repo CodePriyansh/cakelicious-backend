@@ -13,13 +13,11 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 
-router.post("/addProduct",auth.verifyToken, upload.array('prodImages'), productController.addProduct);
+router.post("/addProduct", upload.array('prodImages'), productController.addProduct);
 
 router.get("/viewProduct", productController.getProduct);
 
 router.post("/deleteProduct", auth.verifyToken, productController.deleteProduct);
-
-
 
 router.get("/textsearch-product/:text",auth.verifyToken,productController.searchProduct);
 
@@ -28,10 +26,10 @@ router.get('/category-product/:cid',auth.verifyToken,productController.categoryb
 router.get('/occassion-product/:oid',auth.verifyToken,productController.occassionbyproduct);
 //  router.post("/updateProduct",auth.verifyToken, upload.array('prodsImages'), productController.updateProduct);
 
-
-
 router.post("/deleteOneReview" , auth.verifyToken, productController.deleteOneReview)
 router.get("/viewReview" , auth.verifyToken, productController.viewReview)
+
+router.get("/getProductbyFlavour/:fid",productController.productByFlavour)
 
 
 
