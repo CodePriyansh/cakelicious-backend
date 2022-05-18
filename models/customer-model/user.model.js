@@ -32,8 +32,9 @@ const customerSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  bio: {
-    type: String,
+  mobileVarify: {
+    type: Boolean,
+    default: false,
   },
   status: {
     type: Boolean,
