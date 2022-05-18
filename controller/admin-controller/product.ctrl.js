@@ -153,7 +153,7 @@ exports.occassionbyproduct = (request,response)=>{
 exports.productByFlavour=(request,response)=>{
   console.log(request.params.fid)
   Product.find({flavourId:request.params.fid}).then(result=>{
-    return response.status(201).json(result);
+    return response.status(200).json(result);
   }).catch(err=>{
     console.log(err);
     return response.status(500).json({error:'opps something went wrong!'})

@@ -17,7 +17,7 @@ router.post("/addProduct", upload.array('prodImages'), productController.addProd
 
 router.get("/viewProduct",auth.verifyToken, productController.getProduct);
 
-router.post("/deleteProduct", auth.verifyToken, productController.deleteProduct);
+router.post("/deleteProduct",  productController.deleteProduct);
 
 router.get("/textsearch-product/:text",auth.verifyToken,productController.searchProduct);
 
