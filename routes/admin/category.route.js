@@ -16,6 +16,7 @@ const auth = require("../../Authorization/userAuth.token")
 router.post("/addCategory",auth.verifyToken,upload.single('catImage'), categoryController.addCategory);
 
 router.get("/viewCategory",auth.verifyToken, categoryController.getCategory);
+router.get("/viewCategoryByuser", categoryController.getCategory);
 
 router.post("/deleteCategory", auth.verifyToken, categoryController.deleteCategory);
 
