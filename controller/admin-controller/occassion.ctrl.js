@@ -83,30 +83,6 @@ exports.getOccassion = (request, response) => {
         });
 }
 
-
-exports.deleteOccassion = (request, response) => {
-
-
-  Occassion.deleteMany({ _id: request.body.id })
-      .then(result => {
-          Occassion.deleteMany({ occassionId: request.body.id }).then((result) => {
-              console.log(result)
-              if (result.deletedCount)
-                  return response.status(200).json({ message: 'success' });
-              else
-                  return response.status(200).json({ message: 'product not deleted' });
-          }).catch((err) => {
-              return response.status(500).json({ message: 'Something went wrong products not deleted' });
-          })
-
-      })
-      .catch(err => {
-          console.log(err)
-          return response.status(500).json({ message: 'Something went wrong products not deleted' });
-      });
-}
-
-
 exports.getOneOccasssion = (request, response)=>{
 
   Occassion.findOne({_id:request.params.occassionId}).then((result)=>{
