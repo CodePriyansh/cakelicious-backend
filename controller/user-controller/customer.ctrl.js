@@ -4,8 +4,7 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
-// const fast2sms = require("fast-two-sms");
-
+const fast2sms = require("fast-two-sms");
 
 const domain = "http://localhost:3000";
 
@@ -13,18 +12,17 @@ let mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
 const Customer = require("../../models/customer-model/user.model");
 
-
 exports.Signup = async (request, response) => {
   const { email, name, mobile, password } = request.body;
   const hash = await bcrypt.hash(password, 12);
   let oldCustomer = await Customer.findOne({ email: email, mobile: mobile });
-  console.log("Old Customer: ", oldCustomer); 
+  console.log("Old Customer: ", oldCustomer);
   if (!oldCustomer) {
     const result = await Customer.create({
       name: name,
@@ -33,11 +31,11 @@ exports.Signup = async (request, response) => {
       mobile: mobile,
       address: "",
       profilePic: "",
-      bio: "",
-      otp:"",
+      // bio: "",
+      otp: "",
     });
     if (result) {
-      console.log(process.env.EMAIL_TOKEN_KEY)
+      console.log(process.env.EMAIL_TOKEN_KEY);
       let verifyToken = jwt.sign(
         {
           emailVerification: {
@@ -75,8 +73,7 @@ exports.Signup = async (request, response) => {
         }
       });
       return response.status(200).json(result);
-    } 
-    else {
+    } else {
       return response.status(500).json(error);
     }
   } else {
@@ -140,14 +137,14 @@ exports.resendVerifyEmail = async (request, response) => {
 exports.Signin = async (request, response) => {
   const { email, password } = request.body;
   const result = await Customer.findOne({ email: email });
-  console.log("Result of login: ", result); 
+  console.log("Result of login: ", result);
   if (result) {
-    console.log(result.status)
-    console.log(result.password)
+    console.log(result.status);
+    console.log(result.password);
     if (result.status) {
-      const match = await bcrypt.compare(password,result.password);
-      console.log("hello")
-      console.log("Bcrypt: ", match)
+      const match = await bcrypt.compare(password, result.password);
+      console.log("hello");
+      console.log("Bcrypt: ", match);
       if (match) {
         const token = jwt.sign(
           {
@@ -165,29 +162,27 @@ exports.Signin = async (request, response) => {
         result.token = token;
         console.log("Token: ", token);
         return response.status(200).json({
-          status:"login-success",
-          current_user:result,
-          token:token
+          status: "login-success",
+          current_user: result,
+          token: token,
         });
       } else {
         return response.status(500).json({ msg: "Invalid Password." });
       }
-    }
-    else {
+    } else {
       return response.status(401).json({ msg: "Not varified" });
     }
-  } 
-  else {
+  } else {
     return response.status(500).json({ error: "Email is invalid!" });
   }
 };
 
 exports.verifyEmail = async (request, response) => {
-  console.log("helllo")
+  console.log("helllo");
   let paramsToken = request.params.id;
-  console.log(request.params.id)
-  console.log(process.env.EMAIL_TOKEN_KEY)
-  console.log(paramsToken)
+  console.log(request.params.id);
+  console.log(process.env.EMAIL_TOKEN_KEY);
+  console.log(paramsToken);
   let decoded = jwt.verify(paramsToken, process.env.EMAIL_TOKEN_KEY);
   request.verifyToken = decoded;
   const tokenDecoded = request.verifyToken.emailVerification;
@@ -264,26 +259,85 @@ exports.resetPassword = async (request, response) => {
   }
 };
 
+exports.sendOtp = async (request, response) => {
+  const { email } = request.body;
+  const result = await Customer.findOne({ email: email });
+  console.log(result);
+  if (result) {
+    let otp = otpGenerator.generate(6, {
+      lowerCaseAlphabets: false,
+      upperCaseAlphabets: false,
+      specialChars: false,
+    });
+    let option = {
+      authorization:
+        "AqpRDdaVo8JnHEXKQGliyYvB0594L7WkjPcmxrIe2hC3g1MfTtZbRkCjvVMgJFeuO483zPcBaxYdXmKW",
+      message:
+        "<b>Dear " +
+        result.name +
+        "!</b>" +
+        " Here is the 6 digits OTP: " +
+        otp +
+        " ></a>  enter OTP to Verify your mobile number.</b>" +
+        "<b><br><br><br>Regards</b><br><h4>CakeLicious 🎂</h4>",
+      numbers: [result.mobile],
+    };
+    console.log(option);
+    await fast2sms
+      .sendMessage(option)
+      .then((respo) => {
+        console.log("efrrpp");
+        console.log(respo);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const updateResult = await Customer.updateOne(
+      { email: result.email },
+      {
+        $set: {
+          otp: otp,
+        },
+      }
+    );
+    console.log(updateResult);
+    const result1 = await Customer.findOne({ email: email });
+    console.log(result1);
+    return response
+      .status(200)
+      .json({
+        msg: "OTP sent successfully!",
+        Status: true,
+        current_user: result1,
+      });
+  } else {
+    return response.status(500).json({
+      error: "No account found, please check email address of try another one!",
+    });
+  }
+};
+
 exports.verifyOTP = async (request, response) => {
-  let id = request.params.id;
+  let id = request.body.id;
   let otp = request.body.otp;
   let result = await Customer.findOne({ _id: id });
-  // console.log("verify findOne: " + result);
+
   if (result) {
-    // console.log(result.otp)
-    // console.log("Database OTP: " + result.otp);
-    if (result.otp === otp) {
-      console.log('hello')
-      // let hash = await bcrypt.hash(request.body.password, 12);
+    console.log(result);
+    console.log(otp);
+    if (result.otp == otp) {
+      console.log("hello");
       let resultUpdate = await Customer.updateOne(
         { _id: id },
-        { $set: { otp: "", updatedAt: Date.now() } }
+        { $set: { otp: "", updatedAt: Date.now() ,
+                  mobileVarify:true} }
       );
       console.log(resultUpdate);
       if (resultUpdate.matchedCount) {
         return response
           .status(200)
-          .json({ msg: "Your Password has been updated successfully." });
+          .json({ msg: "Your mobile has been updated successfully." });
       } else {
         return response.status(500).json({ msg: "error" });
       }
@@ -299,28 +353,30 @@ exports.verifyOTP = async (request, response) => {
 
 exports.Profile = async (request, response) => {
   // get the id from JWT token later
-  const { address, bio, name ,profilePic } = request.body;
-  let token = request.customer.customer; // access all the properties of the token which is provided at the time of SignIn (token._id, token.email, token.name)
-  console.log("profile id: " + token._id);
-  console.log("profile email: " + token.email);
+  const { address, mobile, name ,email   } = request.body;
+  
+  console.log(request.body);
   try {
     const result = await Customer.updateOne(
-      { _id: token._id },
+      { email:email},
       {
         $set: {
           name: name,
           address: address,
-          profilePic: "http://localhost:3000/" + request.file.filename,
-          bio: bio,
+          // profilePic:"https://firebasestorage.googleapis.com/v0/b/cake-licious.appspot.com/o/" + req.file.filename + "?alt=media&token=hello",
+          mobile: mobile,
           updatedAt: Date.now(),
         },
       }
     );
+    console.log(result)
     if (result.modifiedCount) {
-      return response
-        .status(200)
-        .json({ success: "Profile updated successfully!" });
-    } else {
+      const fullData = await Customer.findOne({ email: email })
+      return response.status(200).json({
+        status:"login-success",
+        current_user : fullData
+      });
+    } else{
       return response.status(500).json({
         error: "Something went wrong, Profile not updated.",
         result: result,
@@ -334,43 +390,43 @@ exports.Profile = async (request, response) => {
   }
 };
 
-  exports.loginWithGoogle = (request, response, next) => {
-    const { email } = request.body;
-    Customer.findOne({
-      email: email,
-    })
+exports.loginWithGoogle = (request, response, next) => {
+  const { email } = request.body;
+  Customer.findOne({
+    email: email,
+  })
     // lksdflksdfkdsklf
-      .then((result) => {
-        console.log(result);
-        if (result) {
-          const token = jwt.sign(
-            {
-              customer: {
-                _id: result._id,
-                email: result.email,
-                name: result.name,
-              },
+    .then((result) => {
+      console.log(result);
+      if (result) {
+        const token = jwt.sign(
+          {
+            customer: {
+              _id: result._id,
+              email: result.email,
+              name: result.name,
             },
-            process.env.TOKEN_KEY,
-            {
-              expiresIn: "5D",
-            }
-          );
-          result.token = token;
-          console.log("Token: ", token);
-          return response.status(200).json({
-            status:"login-success",
-            current_user:result,
-            token:token
-          });
-        } else {
-          response.status(400).json({ msg: "Email Doesn't match" });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return response
-          .status(500)
-          .json({ message: "Oops Something Went Wrong" });
-      });
-  };
+          },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "5D",
+          }
+        );
+        result.token = token;
+        console.log("Token: ", token);
+        return response.status(200).json({
+          status: "login-success",
+          current_user: result,
+          token: token,
+        });
+      } else {
+        response.status(400).json({ msg: "Email Doesn't match" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return response
+        .status(500)
+        .json({ message: "Oops Something Went Wrong" });
+    });
+};

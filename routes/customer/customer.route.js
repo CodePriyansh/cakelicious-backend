@@ -28,9 +28,12 @@ router.post('/verify-email-resend', customerController.resendVerifyEmail)
     
 router.post('/reset-password', customerController.resetPassword)
 
-router.post('/verify-otp/:id', customerController.verifyOTP)
+router.post('/send-otp', customerController.sendOtp)
 
-router.post('/profile', auth.verifyToken, upload.single("profilePic"), customerController.Profile)
+
+router.post('/verify-otp', customerController.verifyOTP)
+
+router.post('/profile', upload.single("profilePic"), customerController.Profile)
 
 // router.post('/profile-update', auth.verifytoken, upload.single("profilePic"), customerController.Profile)
 
