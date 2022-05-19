@@ -41,9 +41,11 @@ exports.DeleteCartItem = (request, response) => {
 };
 
 exports.ViewCart = (request, response) => {
+  console.log(request.body)
   Cart.findOne({ customerId: request.body.Userid })
     .populate("cartItems")
-    .then((result) => {
+    .then((result) => {  
+      console.log(result)
       return response.status(200).json(result);
     })
     .catch((err) => {
