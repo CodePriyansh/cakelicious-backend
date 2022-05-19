@@ -15,7 +15,7 @@ exports.AddToWishlist = async (request, response) => {
     wishlist.wishlistItem.push(request.body.pId)
 
     wishlist.save().then((result) => {
-        return response.status(200).json(result)
+        return response.status(200).json({status:"ok" , current_user: result})
     }).catch((err) => {
         return response.status(500).json(err)
 
@@ -39,7 +39,7 @@ exports.DeleteWishlistItem = (request, response) => {
 
 exports.ViewWishlist = (request, response) => {
 
-    Wishlist.find({ customerId: request.body.cusId }).populate("wishlistItem").then((result) => {
+    Wishlist.findOne({ customerId: request.body.cusId }).populate("wishlistItem").then((result) => {
         return response.status(200).json(result)
     }).catch((err) => {
         return response.status(500).json(err)
