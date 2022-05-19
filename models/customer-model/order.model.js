@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
-    mobile: {
+    alterMobile: {
         type: String,
         trim: true,
         min: 10,
@@ -52,6 +52,9 @@ const orderSchema = new mongoose.Schema({
     },
     total: {
         type: Number
+    },
+    transactionId:{
+        type:String
     }
 },{
     timestamps:true
