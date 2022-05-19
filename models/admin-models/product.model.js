@@ -54,6 +54,9 @@ const productSchema = new mongoose.Schema({
         }],
     discount: {
         type: String
+    },
+    orderedata:{
+        type:Object
     }
     
 })

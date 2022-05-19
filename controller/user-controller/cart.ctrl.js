@@ -2,11 +2,11 @@ const Cart = require("../../models/customer-model/cart.model");
 exports.AddToCart = async (request, response) => {
   console.log(request.body);
 
-  var cart = await Cart.findOne({ customerId: request.body.cusId });
+  var cart = await Cart.findOne({ customerId: request.body.Userid });
 
   if (!cart) {
     cart = new Cart({
-      customerId: request.body.cusId,
+      customerId: request.body.Userid,
     });
   }
 
@@ -25,7 +25,7 @@ exports.AddToCart = async (request, response) => {
 
 exports.DeleteCartItem = (request, response) => {
   Cart.updateOne(
-    { customerId: request.body.cusId },
+    { customerId: request.body.Userid },
     {
       $pullAll: {
         cartItems: [request.body.pId],
@@ -41,7 +41,7 @@ exports.DeleteCartItem = (request, response) => {
 };
 
 exports.ViewCart = (request, response) => {
-  Cart.findOne({ customerId: request.body.cusId })
+  Cart.findOne({ customerId: request.body.Userid })
     .populate("cartItems")
     .then((result) => {
       return response.status(200).json(result);
@@ -52,7 +52,7 @@ exports.ViewCart = (request, response) => {
 };
 
 exports.DeleteCart = (request, response) => {
-  Cart.deleteOne({ customerId: request.body.cusId })
+  Cart.deleteOne({ customerId: request.body.Userid })
     .then((result) => {
       return response.status(200).json(result);
     })
