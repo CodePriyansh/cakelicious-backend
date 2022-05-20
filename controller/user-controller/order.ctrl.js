@@ -95,7 +95,7 @@ exports.buyNow=(request,response)=>{
 
 
 exports.viewOrder=(request,response)=>{
-     Order.find({customer:request.body.userId}).then(result=>{
+     Order.find({customer:request.body.userId}).populate("orderedItem.ProductId").then(result=>{
         console.log(result)
 
         return response.status(200).json(result);
