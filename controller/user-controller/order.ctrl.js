@@ -92,3 +92,15 @@ exports.buyNow=(request,response)=>{
 
 
 }
+
+
+exports.viewOrder=(request,response)=>{
+     Order.find({customer:request.body.userId}).then(result=>{
+        console.log(result)
+
+        return response.status(200).json(result);
+     }).catch(err=>{
+         console.log(err)
+          return response.status(500).json(err)
+     })
+}

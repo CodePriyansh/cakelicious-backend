@@ -11,5 +11,6 @@ router.post('/create-order', auth.verifyToken, orderController.createOrderId)
 router.post('/place-order', auth.verifyToken, orderController.placeOrder)
 
 router.post('/buy-now', auth.verifyToken, orderController.buyNow)
+router.post('/view-order', auth.verifyToken, orderController.viewOrder)
 
 module.exports = router;
