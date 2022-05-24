@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
-const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', '62990369c1dc673e4679b5869347d33f');
+const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', '4ed6b11ada8ff9f216f60c8c561f8a43');
 
 const domain = "http://localhost:3000";
 
@@ -271,7 +271,7 @@ exports.sendOtp = async (request, response) => {
   const { user} = request.body;
   // console.log(request.body)
   
-  console.log(user)
+  // console.log(user)
     let otp = otpGenerator.generate(4, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
@@ -285,6 +285,7 @@ exports.sendOtp = async (request, response) => {
         .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
         .then(message => {
           console.log(message.sid)
+          console.log(message)
      
                 if(message.sid){
                   return response.status(200).json({msg:'ok',Otp:otp})
@@ -293,6 +294,7 @@ exports.sendOtp = async (request, response) => {
         }
         )
         .catch((err) => {
+          console.log("error")
           console.log(err);
           return response.status(500).json({msg:'err',err:err})
 
