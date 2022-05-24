@@ -203,7 +203,8 @@ exports.verifyEmail = async (request, response) => {
     }
   )
     .then((result) => {
-      console.log("UpdateOne Result: " + result);
+      console.log("UpdateOne Result: ");
+      console.log(result)
       return response
         .status(200)
         .json({ msg: "Your account has been activated successfully." });
@@ -277,27 +278,27 @@ exports.sendOtp = async (request, response) => {
       specialChars: false,
     });
 
-        return response.status(200).json({otp:'1111'})
+        // return response.status(200).json({otp:'1111'})
 
-    // function sendTextMessage() {
-    //   client.messages
-    //     .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
-    //     .then(message => {
-    //       console.log(message.sid)
+    function sendTextMessage() {
+      client.messages
+        .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
+        .then(message => {
+          console.log(message.sid)
      
-    //             if(message.sid){
-    //               return response.status(200).json({msg:'ok',Otp:otp})
-    //             }
+                if(message.sid){
+                  return response.status(200).json({msg:'ok',Otp:otp})
+                }
                 
-    //     }
-    //     )
-    //     .catch((err) => {
-    //       console.log(err);
-    //       return response.status(500).json({msg:'err',err:err})
+        }
+        )
+        .catch((err) => {
+          console.log(err);
+          return response.status(500).json({msg:'err',err:err})
 
-    //     }); 
-    // }
-    // sendTextMessage();
+        }); 
+    }
+    sendTextMessage();
    
 
 
