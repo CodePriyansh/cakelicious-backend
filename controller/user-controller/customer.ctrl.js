@@ -19,6 +19,7 @@ let mailTransporter = nodemailer.createTransport({
 const Customer = require("../../models/customer-model/user.model");
 
 exports.Signup = async (request, response) => {
+  console.log(request.body)
   const { email, name, mobile, password } = request.body;
   const hash = await bcrypt.hash(password, 12);
   let oldCustomer = await Customer.findOne({ email: email, mobile: mobile });
@@ -51,7 +52,7 @@ exports.Signup = async (request, response) => {
       let link = domain + "/customer/verify-email/" + verifyToken;
       let mailDetails = {
         from: '"CakeLicious 🎂" <process.env.EMAIL>', // sender address
-        to: result.email, // list of receivers
+        to:result.email, // list of receivers
         subject: "Email verification!", // Subject line
         html:
           "<b>Congratulations " +
