@@ -276,7 +276,7 @@ exports.sendOtp = async (request, response) => {
       specialChars: false,
     });
 
-        return response.status(200).json({otp:'1111'})
+        return response.status(200).json({Otp:'1111'})
 
     // function sendTextMessage() {
     //   client.messages
