@@ -53,7 +53,7 @@ exports.Signup = async (request, response) => {
       );
       let link = domain + "/customer/verify-email/" + verifyToken;
       let mailDetails = {
-        from: process.env.EMAIL, // sender address
+        from: "'Cakelicious 🎂' <process.env.EMAIL>", // sender address
         to: result.email, // list of receivers
         subject: "Email verification!", // Subject line
         html:
