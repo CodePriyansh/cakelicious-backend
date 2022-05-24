@@ -36,6 +36,8 @@ exports.Signup = async (request, response) => {
       profilePic: "",
       // bio: "",
       otp: "",
+      mobileVarify:true
+
     });
     if (result) {
       console.log(process.env.EMAIL_TOKEN_KEY);
