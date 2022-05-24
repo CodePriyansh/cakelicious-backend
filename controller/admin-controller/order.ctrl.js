@@ -9,3 +9,13 @@ exports.orderDetail = (request, response) => {
             return response.status(500).json(err);
         });
 }
+exports.singleOrderDetail = (request, response) => {
+    Order.findOne({oId:request.body.oId}).populate('customer').populate('orderedItem.ProductId').exec().
+
+    then(results => {
+            return response.status(200).json(results);
+        })
+        .catch(err => {
+            return response.status(500).json(err);
+        });
+}
