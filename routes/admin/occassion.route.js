@@ -13,7 +13,9 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.post("/delete",auth.verifyToken,occassionController.deleteOccassion);
-// router.post("/deleteOcc",auth.verifyToken,occassionController.deleteOcc);
+
+router.post('/update',upload.array('occImages'),occassionController.updateOccassion);
+
 router.post("/addOccassion",auth.verifyToken, upload.array('occImages'), occassionController.addOccassion);
 
 router.get("/viewOccassion", occassionController.getOccassion);

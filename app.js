@@ -20,6 +20,7 @@ var occassionRouter = require('./routes/admin/occassion.route');
 var orderHistoryRouter = require('./routes/admin/orderHistory.route');
 var supportRouter = require('./routes/admin/support.route');
 var flavourRouter = require("./routes/admin/flavour.routs")
+var offerItemRouter = require("./routes/admin/offerItem.route");
 
 // customer side routes import
 var userRouter = require('./routes/customer/customer.route');
@@ -44,7 +45,7 @@ app.use('/order-admin', orderHistoryRouter);
 app.use('/admin-product', adminProductRouter);
 app.use('/support-admin', supportRouter);
 app.use('/admin-flavour',flavourRouter);
-
+app.use('/offeritem',offerItemRouter);
 // user side Routes
 app.use('/customer', userRouter);
 app.use('/cart', cartRouter);
