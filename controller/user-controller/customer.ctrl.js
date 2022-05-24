@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
-const fast2sms = require("fast-two-sms");
+const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', '62990369c1dc673e4679b5869347d33f');
 
 const domain = "http://localhost:3000";
 
@@ -19,20 +19,25 @@ let mailTransporter = nodemailer.createTransport({
 const Customer = require("../../models/customer-model/user.model");
 
 exports.Signup = async (request, response) => {
-  const { email, name, mobile, password } = request.body;
-  const hash = await bcrypt.hash(password, 12);
-  let oldCustomer = await Customer.findOne({ email: email, mobile: mobile });
+  // const { email, name, mobile, password } = request.body;
+
+   console.log(request.body)
+   let {user}=request.body
+  const hash = await bcrypt.hash(user.password, 12);
+  let oldCustomer = await Customer.findOne({ email: user.email, mobile: user.mobile });
   console.log("Old Customer: ", oldCustomer);
   if (!oldCustomer) {
     const result = await Customer.create({
-      name: name,
-      email: email,
+      name: user.name,
+      email: user.email,
       password: hash,
-      mobile: mobile,
+      mobile: user.mobile,
       address: "",
       profilePic: "",
       // bio: "",
       otp: "",
+      mobileVarify:true
+
     });
     if (result) {
       console.log(process.env.EMAIL_TOKEN_KEY);
@@ -50,7 +55,7 @@ exports.Signup = async (request, response) => {
       );
       let link = domain + "/customer/verify-email/" + verifyToken;
       let mailDetails = {
-        from: '"CakeLicious 🎂" <process.env.EMAIL>', // sender address
+        from: "'Cakelicious 🎂' <process.env.EMAIL>", // sender address
         to: result.email, // list of receivers
         subject: "Email verification!", // Subject line
         html:
@@ -198,7 +203,8 @@ exports.verifyEmail = async (request, response) => {
     }
   )
     .then((result) => {
-      console.log("UpdateOne Result: " + result);
+      console.log("UpdateOne Result: ");
+      console.log(result)
       return response
         .status(200)
         .json({ msg: "Your account has been activated successfully." });
@@ -260,62 +266,44 @@ exports.resetPassword = async (request, response) => {
 };
 
 exports.sendOtp = async (request, response) => {
-  const { email } = request.body;
-  const result = await Customer.findOne({ email: email });
-  console.log(result);
-  if (result) {
-    let otp = otpGenerator.generate(6, {
+  console.log(request.body)
+
+  const { user} = request.body;
+  // console.log(request.body)
+  
+  console.log(user)
+    let otp = otpGenerator.generate(4, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    let option = {
-      authorization:
-        "AqpRDdaVo8JnHEXKQGliyYvB0594L7WkjPcmxrIe2hC3g1MfTtZbRkCjvVMgJFeuO483zPcBaxYdXmKW",
-      message:
-        "<b>Dear " +
-        result.name +
-        "!</b>" +
-        " Here is the 6 digits OTP: " +
-        otp +
-        " ></a>  enter OTP to Verify your mobile number.</b>" +
-        "<b><br><br><br>Regards</b><br><h4>CakeLicious 🎂</h4>",
-      numbers: [result.mobile],
-    };
-    console.log(option);
-    await fast2sms
-      .sendMessage(option)
-      .then((respo) => {
-        console.log("efrrpp");
-        console.log(respo);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
-    const updateResult = await Customer.updateOne(
-      { email: result.email },
-      {
-        $set: {
-          otp: otp,
-        },
-      }
-    );
-    console.log(updateResult);
-    const result1 = await Customer.findOne({ email: email });
-    console.log(result1);
-    return response
-      .status(200)
-      .json({
-        msg: "OTP sent successfully!",
-        Status: true,
-        current_user: result1,
-      });
-  } else {
-    return response.status(500).json({
-      error: "No account found, please check email address of try another one!",
-    });
-  }
+        // return response.status(200).json({otp:'1111'})
+
+    function sendTextMessage() {
+      client.messages
+        .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
+        .then(message => {
+          console.log(message.sid)
+     
+                if(message.sid){
+                  return response.status(200).json({msg:'ok',Otp:otp})
+                }
+                
+        }
+        )
+        .catch((err) => {
+          console.log(err);
+          return response.status(500).json({msg:'err',err:err})
+
+        }); 
+    }
+    sendTextMessage();
+   
+
+
+
+  
 };
 
 exports.verifyOTP = async (request, response) => {

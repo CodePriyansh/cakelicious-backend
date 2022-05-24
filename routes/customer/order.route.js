@@ -12,5 +12,7 @@ router.post('/place-order', auth.verifyToken, orderController.placeOrder)
 
 
 router.post('/buy-now', auth.verifyToken, orderController.buyNow)
+router.post('/view-order', auth.verifyToken, orderController.viewOrder)
+router.post('/cash-on-delivery', auth.verifyToken, orderController.cashOnDelivery)
 
 module.exports = router;
