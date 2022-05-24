@@ -19,7 +19,8 @@ exports.createOrderId = (request, response) => {
 
 
 exports.placeOrder = (request, response) => {
-
+ 
+    console.log('body')
     console.log(request.body);
     let {userId,paymentResponse,address,alterMobile,orderedItems} =request.body;
     let payId  = paymentResponse.razorpay_payment_id;
@@ -46,7 +47,7 @@ exports.placeOrder = (request, response) => {
     console.log('out')
 
      for (let i = 0; i < orderedItems.length; i++) {
-        order.orderedItem.push({ ProductId: request.body.orderedItems[i]._id, Qty: 1, size:'1'})
+        order.orderedItem.push({ ProductId: request.body.orderedItems[i]._id, Qty: request.body.orderedItems[i].qty*1, size:request.body.orderedItems[i].size*1})
     }
 
     
@@ -82,7 +83,7 @@ exports.buyNow=(request,response)=>{
         customer:request.body.customer,
         total:request.body.total
     })
-
+ 
     order.orderedItem.push({ProductId:request.body.pId,Qty:request.body.qty,size:request.body.size})
     order.save().then((result)=>{
      return response.status(200).json(result)
@@ -103,4 +104,29 @@ exports.viewOrder=(request,response)=>{
          console.log(err)
           return response.status(500).json(err)
      })
+}
+
+
+exports.cashOnDelivery=(request,response)=>{
+ console.log(request.body)
+
+  let order = new Order ({
+        alterMobile:request.body.alterMobile,
+        address:request.body.address,
+        orderId:request.body.orderId,
+        customer:request.body.userId,
+        total:request.body.totalAmt
+    })
+
+    for (let i = 0; i < request.body.orderedItems.length; i++) {
+        order.orderedItem.push({ ProductId: request.body.orderedItems[i]._id, Qty: request.body.orderedItems[i].qty*1, size:request.body.orderedItems[i].size*1})
+    }
+
+    order.save().then((result)=>{
+        console.log(result)
+         return response.status(200).json({result:result,status:'ok'})
+    }).catch((err)=>{
+        return response.status(500).json(err)
+
+    })
 }
