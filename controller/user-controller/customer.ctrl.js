@@ -278,26 +278,28 @@ exports.sendOtp = async (request, response) => {
 
         return response.status(200).json({Otp:'1111'})
 
-    // function sendTextMessage() {
-    //   client.messages
-    //     .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
-    //     .then(message => {
-    //       console.log(message.sid)     
-    //             if(message.sid){
-    //               return response.status(200).json({msg:'ok',Otp:otp})
-    //             }        
-    //     }
-    //     )
-    //     .catch((err) => {
-    //       console.log(err);
-    //       return response.status(500).json({msg:'err',err:err})
-    //     }); 
-    // }
-    // sendTextMessage();
+    function sendTextMessage() {
+      client.messages
+        .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
+        .then(message => {
+          console.log(message.sid)
+          console.log(message)
+     
+                if(message.sid){
+                  return response.status(200).json({msg:'ok',Otp:otp})
+                }
+                
+        }
+        )
+        .catch((err) => {
+          console.log("error")
+          console.log(err);
+          return response.status(500).json({msg:'err',err:err})
+
+        }); 
+    }
+    sendTextMessage();
    
-
-
-
   
 };
 
