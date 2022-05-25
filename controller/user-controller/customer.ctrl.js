@@ -205,9 +205,7 @@ exports.verifyEmail = async (request, response) => {
     .then((result) => {
       console.log("UpdateOne Result: ");
       console.log(result)
-      return response
-        .status(200)
-        .json({ msg: "Your account has been activated successfully." });
+      return response.render('https://cake-licious-backend.herokuapp.com/customer/sign-in')
     })
     .catch((err) => {
       console.log("Error in IF OTP: " + err);
@@ -278,7 +276,7 @@ exports.sendOtp = async (request, response) => {
       specialChars: false,
     });
 
-        // return response.status(200).json({otp:'1111'})
+        return response.status(200).json({Otp:'1111'})
 
     function sendTextMessage() {
       client.messages
@@ -302,9 +300,6 @@ exports.sendOtp = async (request, response) => {
     }
     sendTextMessage();
    
-
-
-
   
 };
 
