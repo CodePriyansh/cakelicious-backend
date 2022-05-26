@@ -45,6 +45,7 @@ console.log(request.file)
 exports.viewOffer = (request,response,next)=>{
 
     Offer.find().then(result=>{
+        console.log(result)
         return response.status(201).json(result);
     })
     .catch(err=>{
