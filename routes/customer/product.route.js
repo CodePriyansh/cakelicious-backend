@@ -11,6 +11,8 @@ router.get("/getProductById/:pId", productController.getProductById);
 
 router.get("/searchProduct/:text", productController.searchProduct)
 
-router.post("/addReview" , productController.addReview)
+router.post("/addReview" , productController.addReview);
+router.post("/editReview" , productController.editReview);
+
 
 module.exports = router;

@@ -48,15 +48,20 @@ const productSchema = new mongoose.Schema({
             userId: {
                 type: String,
                 reference : 'customer'
-            }, review: {
+            },
+             review: {
                 type: String
+            },
+            rating:{
+                type:Number
             }
         }],
     discount: {
         type: String
     },
-    orderedata:{
-        type:Object
+    rating:{
+        type:Number,
+        default:0
     }
     
 })

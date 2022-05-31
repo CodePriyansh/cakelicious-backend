@@ -48,7 +48,7 @@ const orderSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        default: "placed"
+        default: "Confirmed"
     },
     total: {
         type: Number

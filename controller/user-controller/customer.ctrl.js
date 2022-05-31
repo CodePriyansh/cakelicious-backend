@@ -285,9 +285,7 @@ exports.sendOtp = async (request, response) => {
           console.log(message.sid)
           console.log(message)
      
-                if(message.sid){
                   return response.status(200).json({msg:'ok',Otp:otp})
-                }
                 
         }
         )
