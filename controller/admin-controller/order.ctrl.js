@@ -21,19 +21,16 @@ exports.singleOrderDetail = (request, response) => {
 }
 
 exports.updateStatus= async (request,response)=>{
-
     console.log(request.body.status);
     console.log(request.body.oId);
-
     var order = await Order.findOne({_id:request.body.oId});
-
     order.orderStatus = request.body.status
-  
     console.log(order);
-
     order.save().then((result)=>{
+
            return response.status(200).json(result)
     }).catch((err)=>{ 
+        
         return response.status(500).json(err)
 
     })

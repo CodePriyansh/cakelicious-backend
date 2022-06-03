@@ -6,7 +6,7 @@ const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
 const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', '4ed6b11ada8ff9f216f60c8c561f8a43');
 
-const domain = "http://localhost:3000";
+const domain = "https://cake-licious-backend.heroku.com";
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -205,7 +205,7 @@ exports.verifyEmail = async (request, response) => {
     .then((result) => {
       console.log("UpdateOne Result: ");
       console.log(result)
-      return response.render('https://cake-licious-backend.herokuapp.com/customer/sign-in')
+      return response.render('https://cake-licious-first.herokuapp.com/customer/sign-in')
     })
     .catch((err) => {
       console.log("Error in IF OTP: " + err);
@@ -278,25 +278,25 @@ exports.sendOtp = async (request, response) => {
 
         return response.status(200).json({Otp:'1111'})
 
-    function sendTextMessage() {
-      client.messages
-        .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
-        .then(message => {
-          console.log(message.sid)
-          console.log(message)
+    // function sendTextMessage() {
+    //   client.messages
+    //     .create({ body: 'Hello' + request.body.name  + "enter this otp to verify your account : " + otp, from: '+18592518128', to: "+91"+request.body.mobile})
+    //     .then(message => {
+    //       console.log(message.sid)
+    //       console.log(message)
      
-                  return response.status(200).json({msg:'ok',Otp:otp})
+    //               return response.status(200).json({msg:'ok',Otp:otp})
                 
-        }
-        )
-        .catch((err) => {
-          console.log("error")
-          console.log(err);
-          return response.status(500).json({msg:'err',err:err})
+    //     }
+    //     )
+    //     .catch((err) => {
+    //       console.log("error")
+    //       console.log(err);
+    //       return response.status(500).json({msg:'err',err:err})
 
-        }); 
-    }
-    sendTextMessage();
+    //     }); 
+    // }
+    // sendTextMessage();
    
   
 };
