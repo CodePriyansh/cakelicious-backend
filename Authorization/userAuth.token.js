@@ -3,7 +3,6 @@ const config = process.env
 
 exports.verifyToken = (request, response, next) => {
     const token = request.body.token || request.query.token || request.headers.authorization || request.headers["token"]
-
     if (!token) {
         return response.status(403).json("A token is required for authentication")
     }
