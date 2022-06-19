@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
-const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', 'af4e2ab6c353b9c2dcf4fc77cef783cb');
+const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', process.env.TWILIO_KEY);
 
 const domain = "https://cake-licious-backend.heroku.com";
 
