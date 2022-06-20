@@ -6,7 +6,7 @@ const auth = require("../../Authorization/userAuth.token");
 require("dotenv").config();
 const client = require('twilio')('ACcb3d27c9eaeb98faa158ee1c8d35c683', process.env.TWILIO_KEY);
 
-const domain = "https://cake-licious-backend.heroku.com";
+const domain = "https://cake-licious-backend-first.herokuapp.com";
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
